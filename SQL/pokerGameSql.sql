@@ -1,6 +1,6 @@
-S
 
-USE pokergamedb
+
+USE pokergamedb;
 
 /* 用户表 */
 CREATE TABLE `user`(
@@ -8,9 +8,9 @@ CREATE TABLE `user`(
 	`name` VARCHAR(20) NOT NULL,/* 昵称 */
 	username VARCHAR(20) UNIQUE NOT NULL,/* 用户名 */
 	`password` VARCHAR(20) NOT NULL,/* 密码 */
-	photo VARCHAR(200) NOT NULL, /* 用户头像 */
+	photo BLOB, /* 用户头像 */
 	`status` INT(1) DEFAULT(1) NOT NULL /* 状态 0：未生效  1：使用中 */
-)
+);
 
 /* 用户胜负情况 */
 CREATE TABLE userGameInfo(
@@ -19,7 +19,7 @@ CREATE TABLE userGameInfo(
 	lost INT(2) DEFAULT(0) NOT NULL,/*败场*/
 	raceNum INT(2) DEFAULT(0) NOT NULL,/*比赛场次*/
 	CONSTRAINT `userGameInfo_userId` FOREIGN KEY (userId) REFERENCES `user`(userId)
-)
+);
 
 /* 历史比赛信息 */
 CREATE TABLE raceInfo(
@@ -30,7 +30,7 @@ CREATE TABLE raceInfo(
 	player4 INT(2) NOT NULL,/* 玩家4 */
 	winner1 INT(2) NOT NULL,/* 胜利者1 */
 	winner2 INT(2) NOT NULL /* 胜利者2 */
-)
+);
 
 
 
