@@ -2,7 +2,7 @@
 
 USE pokergamedb;
 
-/* 用户表 *//**/
+/* 用户表 */
 CREATE TABLE `user`(
 	userId INT(2) PRIMARY KEY AUTO_INCREMENT NOT NULL,/* 用户id，并且从 1 开始自增 */
 	`name` VARCHAR(20) NOT NULL,/* 昵称 */
