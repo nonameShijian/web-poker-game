@@ -9,7 +9,7 @@ CREATE TABLE `user`(
 	username VARCHAR(20) UNIQUE NOT NULL,/* 用户名 */
 	`password` VARCHAR(20) NOT NULL,/* 密码 */
 	photo BLOB, /* 用户头像 */
-	`status` INT(1) DEFAULT(1) NOT NULL /* 状态 0：未生效  1：使用中 */
+	`status` INT(1) DEFAULT(1) NOT NULL /* 状态 0：未生效  1：使用中    默认：1*/
 );
 
 /* 用户胜负情况 */
