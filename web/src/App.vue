@@ -1,19 +1,18 @@
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
-  <div>Vite + Vue</div>
+  <router-view v-if="supportWebSocket"></router-view>
+  <div v-else>Your browser does not support WebSocket</div>
 </template>
 
-<script setup lang="ts">
-import Poker from './util/poker';
-console.log(Poker);
+<script lang="ts" setup>
+import '@/utils/poker.ts';
+const supportWebSocket = "WebSocket" in window;
 </script>
 
-<style scoped>
+<style>
+html, body, #app {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
 </style>
