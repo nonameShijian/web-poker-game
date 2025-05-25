@@ -7,7 +7,7 @@ import com.webPokerGame.domain.PokerUserGameInfo;
  * 用护胜负情况Mapper接口
  * 
  * @author lwy
- * @date 2025-03-15
+ * @date 2025-05-25
  */
 public interface PokerUserGameInfoMapper 
 {

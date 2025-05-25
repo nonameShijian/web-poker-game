@@ -7,7 +7,7 @@ import com.webPokerGame.domain.PokerRaceInfo;
  * 历史比赛信息Mapper接口
  * 
  * @author lwy
- * @date 2025-03-15
+ * @date 2025-05-25
  */
 public interface PokerRaceInfoMapper 
 {

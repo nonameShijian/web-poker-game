@@ -6,10 +6,10 @@ import com.webPokerGame.common.annotation.Excel;
 import com.webPokerGame.common.core.domain.BaseEntity;
 
 /**
- * 用护胜负情况对象 pocker_user_game_info
+ * 用护胜负情况对象 poker_user_game_info
  * 
  * @author lwy
- * @date 2025-03-15
+ * @date 2025-05-25
  */
 public class PokerUserGameInfo extends BaseEntity
 {

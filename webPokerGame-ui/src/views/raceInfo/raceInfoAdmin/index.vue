@@ -1,10 +1,10 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="信息id" prop="id">
+      <el-form-item label="比赛信息id" prop="id">
         <el-input
           v-model="queryParams.id"
-          placeholder="请输入信息id"
+          placeholder="请输入比赛信息id"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -65,6 +65,30 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
+      <el-form-item label="比赛时间" prop="raceTime">
+        <el-date-picker clearable
+          v-model="queryParams.raceTime"
+          type="date"
+          value-format="yyyy-MM-dd"
+          placeholder="请选择比赛时间">
+        </el-date-picker>
+      </el-form-item>
+      <el-form-item label="赢家积分情况" prop="winnerScore">
+        <el-input
+          v-model="queryParams.winnerScore"
+          placeholder="请输入赢家积分情况"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="输家积分情况" prop="loserScore">
+        <el-input
+          v-model="queryParams.loserScore"
+          placeholder="请输入输家积分情况"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -119,7 +143,7 @@
 
     <el-table v-loading="loading" :data="raceInfoAdminList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="信息id" align="center" prop="id" />
+      <el-table-column label="比赛信息id" align="center" prop="id" />
       <el-table-column label="比赛id" align="center" prop="raceId" />
       <el-table-column label="玩家A" align="center" prop="playerA" />
       <el-table-column label="玩家B" align="center" prop="playerB" />
@@ -127,6 +151,14 @@
       <el-table-column label="玩家D" align="center" prop="playerD" />
       <el-table-column label="胜者A" align="center" prop="winnerA" />
       <el-table-column label="胜者B" align="center" prop="winnerB" />
+      <el-table-column label="比赛时间" align="center" prop="raceTime" width="180">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.raceTime, '{y}-{m}-{d}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="赢家积分情况" align="center" prop="winnerScore" />
+      <el-table-column label="输家积分情况" align="center" prop="loserScore" />
+      <el-table-column label="记录状态：0-已删除，1-正常" align="center" prop="status" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -179,6 +211,20 @@
         <el-form-item label="胜者B" prop="winnerB">
           <el-input v-model="form.winnerB" placeholder="请输入胜者B" />
         </el-form-item>
+        <el-form-item label="比赛时间" prop="raceTime">
+          <el-date-picker clearable
+            v-model="form.raceTime"
+            type="date"
+            value-format="yyyy-MM-dd"
+            placeholder="请选择比赛时间">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="赢家积分情况" prop="winnerScore">
+          <el-input v-model="form.winnerScore" placeholder="请输入赢家积分情况" />
+        </el-form-item>
+        <el-form-item label="输家积分情况" prop="loserScore">
+          <el-input v-model="form.loserScore" placeholder="请输入输家积分情况" />
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -224,7 +270,11 @@ export default {
         playerC: null,
         playerD: null,
         winnerA: null,
-        winnerB: null
+        winnerB: null,
+        raceTime: null,
+        winnerScore: null,
+        loserScore: null,
+        status: null
       },
       // 表单参数
       form: {},
@@ -261,7 +311,11 @@ export default {
         playerC: null,
         playerD: null,
         winnerA: null,
-        winnerB: null
+        winnerB: null,
+        raceTime: null,
+        winnerScore: null,
+        loserScore: null,
+        status: null
       };
       this.resetForm("form");
     },
