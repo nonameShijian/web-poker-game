@@ -19,7 +19,7 @@ const props = defineProps<{
 const ownerName = ref('');
 
 const getOwnerName = async () => {
-  ownerName.value = "RoomOwnerName";
+  ownerName.value = props.room.players[0]?.nickName || '未知';
 };
 
 // 监听props.room.ownerId变化，请求getUserNameById(props.room.ownerId)赋值给ownerName

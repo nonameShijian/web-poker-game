@@ -64,13 +64,14 @@ export function sendWebSocketMessage(message: WsData) {
         ElMessage.info("WebSocket 正在连接中，将在5秒内连接成功后重试");
         // 信号
         const controller = new AbortController();
-        setTimeout(() => {
+        const timer = setTimeout(() => {
           controller.abort();
           reject(new Error("WebSocket 连接超时"));
         }, 5000);
         ws.addEventListener("open", () => {
           console.log("WebSocket 连接成功，发送消息:", message);
           ws!.send(JSON.stringify(message));
+          clearTimeout(timer);
           resolve(null);
         }, { once: true, signal: controller.signal });
         break;

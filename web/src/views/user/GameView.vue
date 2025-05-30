@@ -2,10 +2,25 @@
   <div class="game-container">
     <div class="background"></div>
 
+    <!-- 双方升级点数 -->
+    <div class="upgrade-points">
+      <div class="upgrade-points-title">升级点数<br />已进行了10轮游戏</div>
+      <div class="player-upgrade">
+        <span>A队：</span>
+        <PokerCard suit="hearts" :point="1"></PokerCard>
+      </div>
+      <div class="opponent-upgrade">
+        <span>B队：</span>
+        <PokerCard suit="hearts" :point="12"></PokerCard>
+      </div>
+    </div>
+
     <!-- 顶部玩家 -->
     <PlayerSlot
       v-if="topPlayer"
       :player="topPlayer"
+      :cards="[]"
+      :playedCards="[{ suit: 'diamonds', point: 4 }]"
       position="top"
     ></PlayerSlot>
 
@@ -13,6 +28,8 @@
     <PlayerSlot
       v-if="leftPlayer"
       :player="leftPlayer"
+      :cards="cards.slice(0, 1)"
+      :playedCards="[{ suit: 'hearts', point: 6 }]"
       position="left"
     ></PlayerSlot>
 
@@ -20,6 +37,8 @@
     <PlayerSlot
       v-if="rightPlayer"
       :player="rightPlayer"
+      :cards="cards.slice(0, 4)"
+      :playedCards="[{ suit: 'clubs', point: 12 }]"
       position="right"
     ></PlayerSlot>
 
@@ -27,16 +46,31 @@
     <PlayerSlot
       v-if="bottomPlayer"
       :player="bottomPlayer"
+      :cards="[]"
+      :playedCards="[{ suit: 'hearts', point: 14 }]"
       position="bottom"
     ></PlayerSlot>
 
-    <!-- 玩家手牌 -->
-    <HandCards
-      v-if="bottomPlayer"
-      :cards="cards"
-      :cardSize="150"
-      class="bottom-cards"
-    ></HandCards>
+    <!-- 出牌按钮区域 -->
+    <div class="action-buttons" v-if="bottomPlayer && false">
+      <button @click="pass">不出</button>
+      <button @click="hint">提示</button>
+      <button @click="playCard">出牌</button>
+    </div>
+
+    <!-- 结算对话框 -->
+    <el-dialog title="游戏结算" v-model="over" width="50%" center>
+      <div class="settlement-content">
+        <h3>游戏结果</h3>
+        <p>A队总得分：{{ 14 }}</p>
+        <p>B队总得分：{{ 12 }}</p>
+        <p>胜者：{{ bottomPlayer.nickName }} 和 {{ topPlayer.nickName }}</p>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="closeDialog">确认</el-button>
+      </span>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -47,6 +81,7 @@ import { useUserStore } from "@/store/userStore";
 import { storeToRefs } from "pinia";
 import { useRoomStore } from "@/store/roomStore";
 import { Card } from "@/interface";
+import router from "@/router";
 
 const userStore = useUserStore();
 const { currentUser } = storeToRefs(userStore);
@@ -56,16 +91,24 @@ const { currentRoom } = storeToRefs(roomStore);
 
 const cards = ref<Card[]>([
   {
-    suit: "hearts",
+    suit: "diamonds",
+    point: 5,
+  },
+  {
+    suit: "diamonds",
+    point: 7,
+  },
+  {
+    suit: "spades",
     point: 1,
   },
   {
-    suit: "hearts",
+    suit: "clubs",
     point: 2,
   },
   {
     suit: "hearts",
-    point: 5,
+    point: 3,
   },
   {
     suit: "hearts",
@@ -127,6 +170,24 @@ const bottomPlayer = computed(() => {
   const players = getPlayersInClockwiseOrder();
   return players[0] || null;
 });
+
+const pass = () => {
+  // 处理不出逻辑
+};
+
+const hint = () => {
+  // 处理提示逻辑
+};
+
+const playCard = () => {
+  // 处理出牌逻辑
+};
+
+const over = ref(true);
+const closeDialog = () => {
+  over.value = false;
+  router.push('/user');
+};
 </script>
 
 <style scoped>
@@ -147,16 +208,47 @@ const bottomPlayer = computed(() => {
   left: 0;
   width: 100%;
   height: 100%;
-  background: url("/background.png") no-repeat center center;
+  background: url("/background.jpg") no-repeat center center;
   background-size: cover; /* 关键：强制覆盖整个容器 */
   background-attachment: fixed; /* 可选：固定背景防止滚动 */
 }
 
-.bottom-cards {
+.upgrade-points {
   position: absolute;
-  left: calc(10% + 100px);
-  top: 75%;
-  width: calc(70% - 100px);
-  height: calc(25% - 35px);
+  top: 10px;
+  left: 10px;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 10px;
+  border-radius: 5px;
+}
+
+/* 单独设置标题样式 */
+.upgrade-points-title {
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 8px; /* 和下面内容有一点间距 */
+}
+
+/* 使用一个容器包裹两个队伍信息，并启用 flex 布局 */
+.upgrade-points > .player-upgrade,
+.upgrade-points > .opponent-upgrade {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 5px; /* 可选：两行之间有间隔 */
+}
+
+.action-buttons {
+  position: absolute;
+  top: calc(75vh - 50px);
+  height: 50px;
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.action-buttons button {
+  padding: 10px 20px;
+  font-size: 16px;
 }
 </style>

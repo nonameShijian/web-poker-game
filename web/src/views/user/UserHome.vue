@@ -46,7 +46,7 @@
     >
       <OnlineUserItem
         v-for="user in onlineUsers"
-        :key="user.userId + user.username"
+        :key="user.userId + user.userName"
         :user="user"
         style="margin: 10px"
       />
@@ -73,15 +73,90 @@ import { useRoomStore } from "@/store/roomStore";
 const userStore = useUserStore();
 const roomStore = useRoomStore();
 
-const username = computed(() => userStore.currentUser?.username);
-const rooms = ref<Room[]>([]);
-const onlineUsers = ref<User[]>([]);
+const onlineUsers = ref<User[]>([
+  {
+    userId: 1,
+    userName: "张三",
+    nickName: "张三",
+    email: "",
+    phonenumber: "",
+    sex: "男",
+    avatar: "",
+    password: "",
+    status: "正常",
+    delFlag: "0",
+    loginIp: "",
+    loginDate: new Date(),
+    dept: null,
+    roles: [],
+    roleIds: [],
+    deptId: 1,
+    postIds: [],
+    roleId: 1,
+  },
+  {
+    userId: 2,
+    userName: "李四",
+    nickName: "李四",
+    email: "",
+    phonenumber: "",
+    sex: "男",
+    avatar: "",
+    password: "",
+    status: "正常",
+    delFlag: "0",
+    loginIp: "",
+    loginDate: new Date(),
+    dept: null,
+    roles: [],
+    roleIds: [],
+    deptId: 1,
+    postIds: [],
+    roleId: 1,
+  },
+  {
+    userId: 3,
+    userName: "王五",
+    nickName: "王五",
+    email: "",
+    phonenumber: "",
+    sex: "男",
+    avatar: "",
+    password: "",
+    status: "正常",
+    delFlag: "0",
+    loginIp: "",
+    loginDate: new Date(),
+    dept: null,
+    roles:[],
+    roleIds: [],
+    deptId: 1,
+    postIds: [],
+    roleId: 1,
+  }
+]);
+const rooms = ref<Room[]>([
+  {
+    roomId: 1,
+    ownerId: 100,
+    // players: [],
+    get players(): User[] {
+      return [onlineUsers.value[0], onlineUsers.value[1], onlineUsers.value[2], onlineUsers.value[3]];
+    },
+
+    maxPlayers: 4,
+    currentPlayers: 1,
+    createdAt: new Date(),
+    status: 0,
+  },
+]);
+
 const showOnlineUsers = ref(false);
 const onlineBtnRef = ref();
 const userListPosition = ref({ top: "0px", left: "0px" }); // 定位信息
 
-const inRoom = ref(false);
-const room = ref<Room | null>(null);
+const inRoom = ref(true);
+const room = ref<Room | null>(rooms.value[0]);
 
 // 显示/隐藏在线用户列表
 const toggleOnlineUsers = () => {
@@ -150,7 +225,7 @@ const createRoom = () => {
       maxPlayers: 4,
     },
     timestamp: Date.now(),
-  }).catch((e) => ElMessage.error(e.message));;
+  }).catch((e) => ElMessage.error(e.message));
 };
 
 const leaveRoom = (ownerId: number) => {
@@ -158,7 +233,7 @@ const leaveRoom = (ownerId: number) => {
     action: "leave_room",
     data: { ownerId },
     timestamp: Date.now(),
-  }).catch((e) => ElMessage.error(e.message));;
+  }).catch((e) => ElMessage.error(e.message));
 };
 
 // 是否可以开始游戏（例如：所有玩家都已就绪）
@@ -177,7 +252,11 @@ const startGame = () => {
       ownerId: room.value!.ownerId,
     },
     timestamp: Date.now(),
-  }).catch((e) => ElMessage.error(e.message));;
+  }).catch((e) => ElMessage.error(e.message));
+
+  // 测试代码
+  roomStore.setRoom(room.value!);
+  router.push("/game");
 };
 
 // 封装获取用户信息的方法
@@ -235,7 +314,7 @@ const WebSocketMessageListener = (event: any) => {
         action: "heart_beat",
         data: {},
         timestamp: Date.now(),
-      }).catch((e) => ElMessage.error(e.message));;
+      }).catch((e) => ElMessage.error(e.message));
       break;
     case "msg_error":
       ElMessage.error(data.message!);
@@ -254,6 +333,8 @@ onMounted(async () => {
   if (!userStore.currentUser) {
     try {
       await fetchUserInfo();
+      console.log(userStore.currentUser);
+      onlineUsers.value.unshift({ ...userStore.currentUser! });
     } catch (error) {
       console.log(error);
       ElMessage.error("登录已过期，请重新登录");
@@ -271,7 +352,7 @@ onMounted(async () => {
     action: "update_data",
     data: {},
     timestamp: Date.now(),
-  }).catch((e) => ElMessage.error(e.message));;
+  }).catch((e) => ElMessage.error(e.message));
 
   document.addEventListener("click", handleClickOutside);
   window.addEventListener("resize", handleResize);
