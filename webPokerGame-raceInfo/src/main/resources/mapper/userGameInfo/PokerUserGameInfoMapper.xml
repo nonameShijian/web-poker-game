@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.webPokerGame.mapper.PokerUserGameInfoMapper">
+    
+    <resultMap type="PokerUserGameInfo" id="PokerUserGameInfoResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="win"    column="win"    />
+        <result property="lost"    column="lost"    />
+        <result property="raceNum"    column="race_num"    />
+    </resultMap>
+
+    <sql id="selectPokerUserGameInfoVo">
+        select id, user_id, win, lost, race_num from poker_user_game_info
+    </sql>
+
+    <select id="selectPokerUserGameInfoList" parameterType="PokerUserGameInfo" resultMap="PokerUserGameInfoResult">
+        <include refid="selectPokerUserGameInfoVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="win != null "> and win = #{win}</if>
+            <if test="lost != null "> and lost = #{lost}</if>
+            <if test="raceNum != null "> and race_num = #{raceNum}</if>
+        </where>
+    </select>
+    
+    <select id="selectPokerUserGameInfoById" parameterType="Long" resultMap="PokerUserGameInfoResult">
+        <include refid="selectPokerUserGameInfoVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPokerUserGameInfo" parameterType="PokerUserGameInfo">
+        insert into poker_user_game_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="win != null">win,</if>
+            <if test="lost != null">lost,</if>
+            <if test="raceNum != null">race_num,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="win != null">#{win},</if>
+            <if test="lost != null">#{lost},</if>
+            <if test="raceNum != null">#{raceNum},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePokerUserGameInfo" parameterType="PokerUserGameInfo">
+        update poker_user_game_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="win != null">win = #{win},</if>
+            <if test="lost != null">lost = #{lost},</if>
+            <if test="raceNum != null">race_num = #{raceNum},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePokerUserGameInfoById" parameterType="Long">
+        delete from poker_user_game_info where id = #{id}
+    </delete>
+
+    <delete id="deletePokerUserGameInfoByIds" parameterType="String">
+        delete from poker_user_game_info where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

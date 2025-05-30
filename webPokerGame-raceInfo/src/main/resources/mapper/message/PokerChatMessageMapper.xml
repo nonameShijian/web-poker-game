@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.webPokerGame.mapper.PokerChatMessageMapper">
+    
+    <resultMap type="PokerChatMessage" id="PokerChatMessageResult">
+        <result property="messageId"    column="messageId"    />
+        <result property="roomId"    column="roomId"    />
+        <result property="userId"    column="userId"    />
+        <result property="message"    column="message"    />
+        <result property="sentTime"    column="sent_time"    />
+    </resultMap>
+
+    <sql id="selectPokerChatMessageVo">
+        select messageId, roomId, userId, message, sent_time from poker_chat_message
+    </sql>
+
+    <select id="selectPokerChatMessageList" parameterType="PokerChatMessage" resultMap="PokerChatMessageResult">
+        <include refid="selectPokerChatMessageVo"/>
+        <where>  
+            <if test="roomId != null "> and roomId = #{roomId}</if>
+            <if test="userId != null "> and userId = #{userId}</if>
+            <if test="message != null  and message != ''"> and message like concat('%', #{message}, '%')</if>
+            <if test="sentTime != null "> and sent_time like concat('%', #{sentTime}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectPokerChatMessageByMessageId" parameterType="Long" resultMap="PokerChatMessageResult">
+        <include refid="selectPokerChatMessageVo"/>
+        where messageId = #{messageId}
+    </select>
+        
+    <insert id="insertPokerChatMessage" parameterType="PokerChatMessage" useGeneratedKeys="true" keyProperty="messageId">
+        insert into poker_chat_message
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roomId != null">roomId,</if>
+            <if test="userId != null">userId,</if>
+            <if test="message != null">message,</if>
+            <if test="sentTime != null">sent_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roomId != null">#{roomId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="message != null">#{message},</if>
+            <if test="sentTime != null">#{sentTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePokerChatMessage" parameterType="PokerChatMessage">
+        update poker_chat_message
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="roomId != null">roomId = #{roomId},</if>
+            <if test="userId != null">userId = #{userId},</if>
+            <if test="message != null">message = #{message},</if>
+            <if test="sentTime != null">sent_time = #{sentTime},</if>
+        </trim>
+        where messageId = #{messageId}
+    </update>
+
+    <delete id="deletePokerChatMessageByMessageId" parameterType="Long">
+        delete from poker_chat_message where messageId = #{messageId}
+    </delete>
+
+    <delete id="deletePokerChatMessageByMessageIds" parameterType="String">
+        delete from poker_chat_message where messageId in 
+        <foreach item="messageId" collection="array" open="(" separator="," close=")">
+            #{messageId}
+        </foreach>
+    </delete>
+</mapper>

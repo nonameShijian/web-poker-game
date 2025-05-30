@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.webPokerGame.mapper.PokerRoomMapper">
+    
+    <resultMap type="PokerRoom" id="PokerRoomResult">
+        <result property="roomId"    column="roomId"    />
+        <result property="ownerId"    column="ownerId"    />
+        <result property="maxPlayers"    column="max_players"    />
+        <result property="currentPlayers"    column="current_players"    />
+        <result property="createdAt"    column="created_at"    />
+    </resultMap>
+
+    <sql id="selectPokerRoomVo">
+        select roomId, ownerId, max_players, current_players, created_at from poker_room
+    </sql>
+
+    <select id="selectPokerRoomList" parameterType="PokerRoom" resultMap="PokerRoomResult">
+        <include refid="selectPokerRoomVo"/>
+        <where>  
+            <if test="ownerId != null "> and ownerId = #{ownerId}</if>
+            <if test="maxPlayers != null "> and max_players = #{maxPlayers}</if>
+            <if test="currentPlayers != null "> and current_players = #{currentPlayers}</if>
+            <if test="createdAt != null "> and created_at = #{createdAt}</if>
+        </where>
+    </select>
+    
+    <select id="selectPokerRoomByRoomId" parameterType="Long" resultMap="PokerRoomResult">
+        <include refid="selectPokerRoomVo"/>
+        where roomId = #{roomId}
+    </select>
+        
+    <insert id="insertPokerRoom" parameterType="PokerRoom" useGeneratedKeys="true" keyProperty="roomId">
+        insert into poker_room
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ownerId != null">ownerId,</if>
+            <if test="maxPlayers != null">max_players,</if>
+            <if test="currentPlayers != null">current_players,</if>
+            <if test="createdAt != null">created_at,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="ownerId != null">#{ownerId},</if>
+            <if test="maxPlayers != null">#{maxPlayers},</if>
+            <if test="currentPlayers != null">#{currentPlayers},</if>
+            <if test="createdAt != null">#{createdAt},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePokerRoom" parameterType="PokerRoom">
+        update poker_room
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="ownerId != null">ownerId = #{ownerId},</if>
+            <if test="maxPlayers != null">max_players = #{maxPlayers},</if>
+            <if test="currentPlayers != null">current_players = #{currentPlayers},</if>
+            <if test="createdAt != null">created_at = #{createdAt},</if>
+        </trim>
+        where roomId = #{roomId}
+    </update>
+
+    <delete id="deletePokerRoomByRoomId" parameterType="Long">
+        delete from poker_room where roomId = #{roomId}
+    </delete>
+
+    <delete id="deletePokerRoomByRoomIds" parameterType="String">
+        delete from poker_room where roomId in 
+        <foreach item="roomId" collection="array" open="(" separator="," close=")">
+            #{roomId}
+        </foreach>
+    </delete>
+</mapper>

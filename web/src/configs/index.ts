@@ -1,9 +1,9 @@
 export default {
 	/** 虚拟路径 */
-	contextPath: '/pokerGame',
+	contextPath: '/',
 	/**  后端接口地址 */
-	baseUrl: 'http://localhost:8081',
-	host: 'localhost:8081',
+	baseUrl: 'http://localhost:8080',
+	host: 'localhost:8080',
 	/** 分页配置 */
 	page: {
 		/** 当前页码 */

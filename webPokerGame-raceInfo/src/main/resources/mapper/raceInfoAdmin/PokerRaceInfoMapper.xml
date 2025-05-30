@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.webPokerGame.mapper.PokerRaceInfoMapper">
+    
+    <resultMap type="PokerRaceInfo" id="PokerRaceInfoResult">
+        <result property="id"    column="id"    />
+        <result property="raceId"    column="race_id"    />
+        <result property="playerA"    column="player_a"    />
+        <result property="playerB"    column="player_b"    />
+        <result property="playerC"    column="player_c"    />
+        <result property="playerD"    column="player_d"    />
+        <result property="winnerA"    column="winner_a"    />
+        <result property="winnerB"    column="winner_b"    />
+        <result property="raceTime"    column="race_time"    />
+        <result property="winnerScore"    column="winner_score"    />
+        <result property="loserScore"    column="loser_score"    />
+        <result property="status"    column="status"    />
+    </resultMap>
+
+    <sql id="selectPokerRaceInfoVo">
+        select id, race_id, player_a, player_b, player_c, player_d, winner_a, winner_b, race_time, winner_score, loser_score, status from poker_race_info
+    </sql>
+
+    <select id="selectPokerRaceInfoList" parameterType="PokerRaceInfo" resultMap="PokerRaceInfoResult">
+        <include refid="selectPokerRaceInfoVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+            <if test="raceId != null "> and race_id = #{raceId}</if>
+            <if test="playerA != null "> and player_a = #{playerA}</if>
+            <if test="playerB != null "> and player_b = #{playerB}</if>
+            <if test="playerC != null "> and player_c = #{playerC}</if>
+            <if test="playerD != null "> and player_d = #{playerD}</if>
+            <if test="winnerA != null "> and winner_a = #{winnerA}</if>
+            <if test="winnerB != null "> and winner_b = #{winnerB}</if>
+            <if test="raceTime != null "> and race_time like concat('%', #{raceTime}, '%')</if>
+            <if test="winnerScore != null "> and winner_score = #{winnerScore}</if>
+            <if test="loserScore != null "> and loser_score = #{loserScore}</if>
+            <if test="status != null "> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectPokerRaceInfoById" parameterType="Long" resultMap="PokerRaceInfoResult">
+        <include refid="selectPokerRaceInfoVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPokerRaceInfo" parameterType="PokerRaceInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into poker_race_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="raceId != null">race_id,</if>
+            <if test="playerA != null">player_a,</if>
+            <if test="playerB != null">player_b,</if>
+            <if test="playerC != null">player_c,</if>
+            <if test="playerD != null">player_d,</if>
+            <if test="winnerA != null">winner_a,</if>
+            <if test="winnerB != null">winner_b,</if>
+            <if test="raceTime != null">race_time,</if>
+            <if test="winnerScore != null">winner_score,</if>
+            <if test="loserScore != null">loser_score,</if>
+            <if test="status != null">status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="raceId != null">#{raceId},</if>
+            <if test="playerA != null">#{playerA},</if>
+            <if test="playerB != null">#{playerB},</if>
+            <if test="playerC != null">#{playerC},</if>
+            <if test="playerD != null">#{playerD},</if>
+            <if test="winnerA != null">#{winnerA},</if>
+            <if test="winnerB != null">#{winnerB},</if>
+            <if test="raceTime != null">#{raceTime},</if>
+            <if test="winnerScore != null">#{winnerScore},</if>
+            <if test="loserScore != null">#{loserScore},</if>
+            <if test="status != null">#{status},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePokerRaceInfo" parameterType="PokerRaceInfo">
+        update poker_race_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="raceId != null">race_id = #{raceId},</if>
+            <if test="playerA != null">player_a = #{playerA},</if>
+            <if test="playerB != null">player_b = #{playerB},</if>
+            <if test="playerC != null">player_c = #{playerC},</if>
+            <if test="playerD != null">player_d = #{playerD},</if>
+            <if test="winnerA != null">winner_a = #{winnerA},</if>
+            <if test="winnerB != null">winner_b = #{winnerB},</if>
+            <if test="raceTime != null">race_time = #{raceTime},</if>
+            <if test="winnerScore != null">winner_score = #{winnerScore},</if>
+            <if test="loserScore != null">loser_score = #{loserScore},</if>
+            <if test="status != null">status = #{status},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePokerRaceInfoById" parameterType="Long">
+        delete from poker_race_info where id = #{id}
+    </delete>
+
+    <delete id="deletePokerRaceInfoByIds" parameterType="String">
+        delete from poker_race_info where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
