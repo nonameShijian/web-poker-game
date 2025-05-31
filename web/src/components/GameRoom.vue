@@ -49,7 +49,7 @@ const createPhotoSrc = (player: User) => {
     // } else {
     //   return "female.png";
     // }
-    return "http://localhost:82/static/img/profile.473f5971.jpg";
+    return `${location.protocol}//${location.hostname}:82/static/img/profile.473f5971.jpg`;
   } else {
     return player.avatar;
   }

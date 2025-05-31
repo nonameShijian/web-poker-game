@@ -13,7 +13,7 @@ export default {
   name: "game",
   data() {
     return {
-      src: "http://localhost:5173/user"
+      src: `${location.protocol}//${location.hostname}:5173/user`
     }
   },
   methods: {
@@ -33,7 +33,7 @@ export default {
     },
   },
   mounted() {
-    console.log(store.getters);
+    console.log(`${location.protocol}//${location.hostname}:5173/user`);
     this.$refs.gameIframe.onload = this.sendToken;
     window.addEventListener('message', this.listenMessage);
   },

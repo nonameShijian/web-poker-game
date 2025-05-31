@@ -23,7 +23,7 @@ const stop = watch(
       // } else {
       //   photoSrc.value = "female.png";
       // }
-      photoSrc.value = "http://localhost:82/static/img/profile.473f5971.jpg";
+      photoSrc.value = `${location.protocol}//${location.hostname}:82/static/img/profile.473f5971.jpg`;
     } else {
       photoSrc.value = newPhoto;
     }
