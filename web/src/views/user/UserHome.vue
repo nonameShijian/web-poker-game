@@ -1,84 +1,57 @@
 <template>
-  <el-container style="height: 100vh" class="background">
-    <!-- Header -->
-    <el-header>
-      <div
-        style="
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        "
-      >
-        <h2>欢迎, {{ username }}</h2>
-        <el-dropdown v-if="userStore.currentUser">
-          <!-- <el-icon style="font-size: 30px"><CirclePlus /></el-icon> -->
-          <OnlineUserItem :user="userStore.currentUser"></OnlineUserItem>
-          <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
-            </el-dropdown-menu>
-          </template>
-        </el-dropdown>
-      </div>
-    </el-header>
-
-    <!-- Main Content -->
-    <el-main>
-      <div>
-        <el-card class="room-card" style="opacity: 0.95">
-          <template #header>
-            <div>
-              <span>{{ inRoom ? "游戏房间" : "房间列表" }}</span>
-            </div>
-          </template>
-          <!-- 游戏房间 -->
-          <GameRoom v-if="inRoom" :room="room!" />
-          <!-- 房间列表 -->
-          <GameRoomItem
-            v-else
-            v-for="room in rooms"
-            :key="room.roomId"
-            :room="room"
-            @join="joinRoom(room.ownerId)"
-          />
-          <template #footer>
-            <div class="card-footer">
-              <el-button v-if="inRoom" @click="leaveRoom(room!.ownerId)"
-                >退出房间</el-button
-              >
-              <el-button
-                v-if="inRoom && room!.ownerId  === userStore.currentUser?.userId"
-                @click="startGame"
-                :disabled="!canStartGame"
-                >开始游戏</el-button
-              >
-              <el-button
-                ref="onlineBtnRef"
-                v-if="!inRoom"
-                @click="toggleOnlineUsers"
-                >在线玩家</el-button
-              >
-              <el-button v-if="!inRoom" @click="createRoom">创建房间</el-button>
-            </div>
-          </template>
-        </el-card>
-      </div>
-    </el-main>
-    <transition name="fade">
-      <div
-        v-if="showOnlineUsers"
-        class="online-users-list"
-        :style="{ top: userListPosition.top, left: userListPosition.left }"
-      >
-        <OnlineUserItem
-          v-for="user in onlineUsers"
-          :key="user.userId + user.username"
-          :user="user"
-          style="margin: 10px"
-        />
-      </div>
-    </transition>
-  </el-container>
+  <div class="background">
+    <el-card class="room-card" style="opacity: 0.95">
+      <template #header>
+        <div>
+          <span>{{ inRoom ? "游戏房间" : "房间列表" }}</span>
+        </div>
+      </template>
+      <!-- 游戏房间 -->
+      <GameRoom v-if="inRoom" :room="room!" />
+      <!-- 房间列表 -->
+      <GameRoomItem
+        v-else
+        v-for="room in rooms"
+        :key="room.roomId"
+        :room="room"
+        @join="joinRoom(room.ownerId)"
+      />
+      <template #footer>
+        <div class="card-footer">
+          <el-button v-if="inRoom" @click="leaveRoom(room!.ownerId)"
+            >退出房间</el-button
+          >
+          <el-button
+            v-if="inRoom && room!.ownerId  === userStore.currentUser?.userId"
+            @click="startGame"
+            :disabled="!canStartGame"
+            >开始游戏</el-button
+          >
+          <el-button
+            ref="onlineBtnRef"
+            v-if="!inRoom"
+            @click="toggleOnlineUsers"
+            >在线玩家</el-button
+          >
+          <el-button v-if="!inRoom" @click="createRoom">创建房间</el-button>
+        </div>
+      </template>
+    </el-card>
+  </div>
+  <transition name="fade">
+    <div
+      v-if="showOnlineUsers"
+      class="online-users-list"
+      :style="{ top: userListPosition.top, left: userListPosition.left }"
+    >
+      <OnlineUserItem
+        v-for="user in onlineUsers"
+        :key="user.userId + user.userName"
+        :user="user"
+        style="margin: 10px"
+      />
+    </div>
+  </transition>
 </template>
 
 <script setup lang="ts">
@@ -86,9 +59,11 @@ import { ref, onMounted, onUnmounted, computed } from "vue";
 import { ElMessage } from "element-plus";
 import { Room, User } from "@/interface";
 import { useUserStore } from "@/store/userStore";
-import { getUserInfoByToken, refreshToken } from "@/request";
+import { getUserInfoByToken } from "@/request";
 import router from "@/router";
+import config from "@/configs";
 import {
+  initWebSocket,
   offWebSocketMessage,
   onWebSocketMessage,
   sendWebSocketMessage,
@@ -98,15 +73,90 @@ import { useRoomStore } from "@/store/roomStore";
 const userStore = useUserStore();
 const roomStore = useRoomStore();
 
-const username = computed(() => userStore.currentUser?.username);
-const rooms = ref<Room[]>([]);
-const onlineUsers = ref<User[]>([]);
+const onlineUsers = ref<User[]>([
+  {
+    userId: 1,
+    userName: "张三",
+    nickName: "张三",
+    email: "",
+    phonenumber: "",
+    sex: "男",
+    avatar: "",
+    password: "",
+    status: "正常",
+    delFlag: "0",
+    loginIp: "",
+    loginDate: new Date(),
+    dept: null,
+    roles: [],
+    roleIds: [],
+    deptId: 1,
+    postIds: [],
+    roleId: 1,
+  },
+  {
+    userId: 2,
+    userName: "李四",
+    nickName: "李四",
+    email: "",
+    phonenumber: "",
+    sex: "男",
+    avatar: "",
+    password: "",
+    status: "正常",
+    delFlag: "0",
+    loginIp: "",
+    loginDate: new Date(),
+    dept: null,
+    roles: [],
+    roleIds: [],
+    deptId: 1,
+    postIds: [],
+    roleId: 1,
+  },
+  {
+    userId: 3,
+    userName: "王五",
+    nickName: "王五",
+    email: "",
+    phonenumber: "",
+    sex: "男",
+    avatar: "",
+    password: "",
+    status: "正常",
+    delFlag: "0",
+    loginIp: "",
+    loginDate: new Date(),
+    dept: null,
+    roles:[],
+    roleIds: [],
+    deptId: 1,
+    postIds: [],
+    roleId: 1,
+  }
+]);
+const rooms = ref<Room[]>([
+  {
+    roomId: 1,
+    ownerId: 100,
+    // players: [],
+    get players(): User[] {
+      return [onlineUsers.value[0], onlineUsers.value[1], onlineUsers.value[2], onlineUsers.value[3]];
+    },
+
+    maxPlayers: 4,
+    currentPlayers: 1,
+    createdAt: new Date(),
+    status: 0,
+  },
+]);
+
 const showOnlineUsers = ref(false);
 const onlineBtnRef = ref();
 const userListPosition = ref({ top: "0px", left: "0px" }); // 定位信息
 
-const inRoom = ref(false);
-const room = ref<Room | null>(null);
+const inRoom = ref(true);
+const room = ref<Room | null>(rooms.value[0]);
 
 // 显示/隐藏在线用户列表
 const toggleOnlineUsers = () => {
@@ -163,7 +213,7 @@ const joinRoom = (ownerId: number) => {
     action: "join_room",
     data: { ownerId },
     timestamp: Date.now(),
-  });
+  }).catch((e) => ElMessage.error(e.message));
 };
 
 // 创建房间方法
@@ -175,7 +225,7 @@ const createRoom = () => {
       maxPlayers: 4,
     },
     timestamp: Date.now(),
-  });
+  }).catch((e) => ElMessage.error(e.message));
 };
 
 const leaveRoom = (ownerId: number) => {
@@ -183,7 +233,7 @@ const leaveRoom = (ownerId: number) => {
     action: "leave_room",
     data: { ownerId },
     timestamp: Date.now(),
-  });
+  }).catch((e) => ElMessage.error(e.message));
 };
 
 // 是否可以开始游戏（例如：所有玩家都已就绪）
@@ -202,26 +252,20 @@ const startGame = () => {
       ownerId: room.value!.ownerId,
     },
     timestamp: Date.now(),
-  });
-};
+  }).catch((e) => ElMessage.error(e.message));
 
-// 退出登录方法
-const logout = () => {
-  if (inRoom.value) {
-    leaveRoom(room.value!.ownerId);
-  }
-  roomStore.clearRoom();
-  userStore.clearUser();
-  router.push("/auth");
+  // 测试代码
+  roomStore.setRoom(room.value!);
+  router.push("/game");
 };
 
 // 封装获取用户信息的方法
 const fetchUserInfo = async () => {
   const data = await getUserInfoByToken();
   if (data.code !== 200) {
-    throw new Error(data.message);
+    throw new Error(data.msg);
   }
-  userStore.setUser(data.data);
+  userStore.setUser(data.user);
 };
 
 const WebSocketMessageListener = (event: any) => {
@@ -270,16 +314,16 @@ const WebSocketMessageListener = (event: any) => {
         action: "heart_beat",
         data: {},
         timestamp: Date.now(),
-      });
+      }).catch((e) => ElMessage.error(e.message));
       break;
     case "msg_error":
       ElMessage.error(data.message!);
       break;
-    case "start_game": 
-    roomStore.setRoom(room.value!);
-    router.push("/game");
-    break
-      default:
+    case "start_game":
+      roomStore.setRoom(room.value!);
+      router.push("/game");
+      break;
+    default:
       console.log("Unknown message action:", data.action);
       break;
   }
@@ -289,17 +333,17 @@ onMounted(async () => {
   if (!userStore.currentUser) {
     try {
       await fetchUserInfo();
+      console.log(userStore.currentUser);
+      onlineUsers.value.unshift({ ...userStore.currentUser! });
     } catch (error) {
-      ElMessage.error("登录状态异常，正在尝试刷新令牌...");
-      try {
-        await refreshToken(); // 刷新 Token
-        await fetchUserInfo(); // 刷新 Token 后再次获取用户信息
-      } catch (refreshError) {
-        ElMessage.error("登录已过期，请重新登录");
-        router.push("/auth");
+      console.log(error);
+      ElMessage.error("登录已过期，请重新登录");
+      if (window.top && window.top != window.self) {
+        window.top.postMessage({ type: "reload" }, "*");
       }
     }
   }
+  initWebSocket(config.baseUrl + "/websocket/game");
   // 页面加载时初始化 WebSocket
   onWebSocketMessage(WebSocketMessageListener);
 
@@ -308,7 +352,7 @@ onMounted(async () => {
     action: "update_data",
     data: {},
     timestamp: Date.now(),
-  });
+  }).catch((e) => ElMessage.error(e.message));
 
   document.addEventListener("click", handleClickOutside);
   window.addEventListener("resize", handleResize);
@@ -348,6 +392,7 @@ const handleResize = () => {
 
 <style scoped>
 .background {
+  display: flex;
   position: absolute;
   top: 0;
   left: 0;
@@ -359,6 +404,9 @@ const handleResize = () => {
 }
 
 .room-card {
+  width: 70%;
+  height: 70%;
+  margin: auto;
   display: grid;
   grid-template-rows: 1fr 8fr 1fr;
   min-height: 70vh;

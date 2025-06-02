@@ -15,18 +15,19 @@
           class="player-photo"
         />
         <div v-if="room.players.at(index - 1)" class="player-username">
-          {{ room.players.at(index - 1)!.username }}
+          {{ room.players.at(index - 1)!.nickName }}
         </div>
+        <div v-if="room.players.at(index - 1)">{{ index }}号位</div>
       </div>
     </div>
 
     <!-- 游戏状态展示 -->
-    <div class="game-status">
+    <!-- <div class="game-status">
       <div class="status-text">
         <span>当前状态: {{ status }}</span>
-        <!-- <span v-if="timer">倒计时: {{ timer }}</span> -->
+        <span v-if="timer">倒计时: {{ timer }}</span>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -42,15 +43,15 @@ const props = defineProps<{
 const status = computed(() => props.room.status);
 
 const createPhotoSrc = (player: User) => {
-  if (!player.photo) {
-    console.log("createPhotoSrc", player);
-    if (player.sex === 0) {
-      return "male.png";
-    } else {
-      return "female.png";
-    }
+  if (!player.avatar) {
+    // if (player.sex === 0) {
+    //   return "male.png";
+    // } else {
+    //   return "female.png";
+    // }
+    return `${location.protocol}//${location.hostname}:82/static/img/profile.473f5971.jpg`;
   } else {
-    return player.photo;
+    return player.avatar;
   }
 };
 </script>
@@ -72,8 +73,8 @@ const createPhotoSrc = (player: User) => {
 }
 
 .player-item {
-  width: 136px;
-  height: 166px;
+  width: 120px;
+  height: 130px;
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 10px;

@@ -1,21 +1,30 @@
 <template>
   <div class="app-container home">
-    欢迎使用若依管理系统
+    欢迎使用立棍扑克游戏平台{{ role === "player" ? "" : "管理系统" }}
   </div>
 </template>
 
 <script>
+import store from '@/store'
+
 export default {
   name: "Index",
   data() {
     return {
       // 版本号
-      version: "3.8.5"
+      version: "3.8.5",
+      role: null,
     };
   },
   methods: {
     goTarget(href) {
       window.open(href, "_blank");
+    }
+  },
+  created() {
+    this.role = store.getters.roles[0];
+    if (this.role === "player") {
+      // this.$router.replace({ path: "/game" });
     }
   }
 };

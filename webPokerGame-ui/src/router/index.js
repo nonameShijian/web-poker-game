@@ -71,7 +71,20 @@ export const constantRoutes = [
         component: () => import('@/views/index'),
         name: 'Index',
         meta: { title: '首页', icon: 'dashboard', affix: true }
-      }
+      },
+    ]
+  },
+  {
+    path: '/game',
+    component: Layout,
+    redirect: 'noredirect',
+    children: [
+      {
+        path: '/game',
+        component: () => import('@/views/game'),
+        name: 'Game',
+        meta: { title: '游戏', icon: 'dashboard', affix: true }
+      },
     ]
   },
   {

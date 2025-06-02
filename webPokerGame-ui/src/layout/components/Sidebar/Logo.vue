@@ -14,8 +14,9 @@
 </template>
 
 <script>
-import logoImg from '@/assets/logo/logo.png'
+// import logoImg from '@/assets/logo/logo.png'
 import variables from '@/assets/styles/variables.scss'
+import store from '@/store'
 
 export default {
   name: 'SidebarLogo',
@@ -35,8 +36,13 @@ export default {
   },
   data() {
     return {
-      title: '若依管理系统',
-      logo: logoImg
+      title: '立棍游戏平台管理系统',
+      logo: "/icon.png"
+    }
+  },
+  created() {
+    if (store.getters.roles[0] === "player") {
+      this.title  = "立棍游戏平台"
     }
   }
 }

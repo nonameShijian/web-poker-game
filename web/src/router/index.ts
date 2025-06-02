@@ -4,17 +4,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'index',
-    component: () => import('../views/AuthView.vue')
-  },
-  {
-    path: '/auth',
-    name: 'auth',
-    component: () => import('../views/AuthView.vue')
-  },
-  {
-    path: '/admin',
-    name: 'admin',
-    component: () => import('../views/admin/AdminHome.vue')
+    component: () => import('../views/user/UserHome.vue')
   },
   {
     path: '/user',

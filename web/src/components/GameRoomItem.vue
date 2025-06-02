@@ -10,7 +10,6 @@
 
 <script setup lang="ts">
 import { Room } from '@/interface';
-import { getUserNameById } from '@/request';
 import { defineProps, computed } from 'vue'
 
 const props = defineProps<{
@@ -20,8 +19,7 @@ const props = defineProps<{
 const ownerName = ref('');
 
 const getOwnerName = async () => {
-  const data = await getUserNameById(props.room.ownerId);
-  ownerName.value = data.data;
+  ownerName.value = props.room.players[0]?.nickName || '未知';
 };
 
 // 监听props.room.ownerId变化，请求getUserNameById(props.room.ownerId)赋值给ownerName

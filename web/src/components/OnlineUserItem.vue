@@ -1,7 +1,7 @@
 <template>
   <div class="online-user-item">
     <img :src="photoSrc" alt="User Photo" class="user-photo" />
-    <span>{{ user.username }}</span>
+    <span>{{ user.nickName }}</span>
   </div>
 </template>
 
@@ -13,16 +13,17 @@ const props = defineProps<{
   user: User;
 }>();
 
-const photoSrc = ref(props.user.photo);
+const photoSrc = ref(props.user.avatar);
 const stop = watch(
-  () => props.user.photo,
+  () => props.user.avatar,
   (newPhoto) => {
     if (!newPhoto) {
-      if (props.user.sex === 0) {
-        photoSrc.value = "male.png";
-      } else {
-        photoSrc.value = "female.png";
-      }
+      // if (props.user.sex == "0") {
+      //   photoSrc.value = "male.png";
+      // } else {
+      //   photoSrc.value = "female.png";
+      // }
+      photoSrc.value = `${location.protocol}//${location.hostname}:82/static/img/profile.473f5971.jpg`;
     } else {
       photoSrc.value = newPhoto;
     }

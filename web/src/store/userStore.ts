@@ -1,6 +1,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { User } from '@/interface'
+import { logout } from '@/request'
 
 export const useUserStore = defineStore('user', () => {
   const currentUser = ref<User | null>(null)
@@ -11,8 +12,8 @@ export const useUserStore = defineStore('user', () => {
 
   function clearUser() {
     currentUser.value = null
-    localStorage.removeItem('accessToken')
-    localStorage.removeItem('refreshToken')
+    localStorage.removeItem('accessToken');
+    logout();
   }
 
   function updateUserInfo(payload: Partial<User>) {

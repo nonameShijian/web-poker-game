@@ -15,7 +15,7 @@ export function initWebSocket(url: string): void {
     return;
   }
 
-  ws = new WebSocket(url);
+  ws = new WebSocket(url, /*[localStorage.getItem("accessToken")!]*/);
 
   ws.onopen = () => {
     console.log("WebSocket connection opened");
@@ -49,12 +49,40 @@ export function initWebSocket(url: string): void {
  * 发送 WebSocket 消息
  * @param message 消息体
  */
-export function sendWebSocketMessage(message: WsData): void {
-  if (ws && ws.readyState === WebSocket.OPEN) {
-    ws.send(JSON.stringify(message));
-  } else {
-    ElMessage.error("WebSocket 未连接或正在连接中");
-  }
+export function sendWebSocketMessage(message: WsData) {
+  return new Promise((resolve, reject) => {
+    if (!ws) {
+      reject(new Error("WebSocket 未连接"));
+      return;
+    }
+    switch (ws.readyState) {
+      case WebSocket.OPEN:
+        ws.send(JSON.stringify(message));
+        resolve(null);
+        break;
+      case WebSocket.CONNECTING:
+        ElMessage.info("WebSocket 正在连接中，将在5秒内连接成功后重试");
+        // 信号
+        const controller = new AbortController();
+        const timer = setTimeout(() => {
+          controller.abort();
+          reject(new Error("WebSocket 连接超时"));
+        }, 5000);
+        ws.addEventListener("open", () => {
+          console.log("WebSocket 连接成功，发送消息:", message);
+          ws!.send(JSON.stringify(message));
+          clearTimeout(timer);
+          resolve(null);
+        }, { once: true, signal: controller.signal });
+        break;
+      case WebSocket.CLOSING:
+        reject(new Error("WebSocket 正在关闭中"));
+        break;
+      case WebSocket.CLOSED:
+        reject(new Error("WebSocket 已关闭，请重新连接"));
+        break;
+    }
+  });
 }
 
 /**

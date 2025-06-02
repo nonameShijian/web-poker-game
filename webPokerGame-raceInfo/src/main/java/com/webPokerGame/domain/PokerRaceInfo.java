@@ -9,7 +9,7 @@ import com.webPokerGame.common.core.domain.BaseEntity;
 
 /**
  * 历史比赛信息对象 poker_race_info
- * 
+ *
  * @author lwy
  * @date 2025-05-25
  */
@@ -23,7 +23,7 @@ public class PokerRaceInfo extends BaseEntity
 
     /** 比赛id */
     @Excel(name = "比赛id")
-    private Integer raceId;
+    private String raceId;
 
     /** 玩家A */
     @Excel(name = "玩家A")
@@ -66,111 +66,111 @@ public class PokerRaceInfo extends BaseEntity
     @Excel(name = "记录状态：0-已删除，1-正常")
     private Integer status;
 
-    public void setId(Long id) 
+    public void setId(Long id)
     {
         this.id = id;
     }
 
-    public Long getId() 
+    public Long getId()
     {
         return id;
     }
-    public void setRaceId(Integer raceId) 
+    public void setRaceId(String raceId)
     {
         this.raceId = raceId;
     }
 
-    public Integer getRaceId() 
+    public String getRaceId()
     {
         return raceId;
     }
-    public void setPlayerA(Integer playerA) 
+    public void setPlayerA(Integer playerA)
     {
         this.playerA = playerA;
     }
 
-    public Integer getPlayerA() 
+    public Integer getPlayerA()
     {
         return playerA;
     }
-    public void setPlayerB(Integer playerB) 
+    public void setPlayerB(Integer playerB)
     {
         this.playerB = playerB;
     }
 
-    public Integer getPlayerB() 
+    public Integer getPlayerB()
     {
         return playerB;
     }
-    public void setPlayerC(Integer playerC) 
+    public void setPlayerC(Integer playerC)
     {
         this.playerC = playerC;
     }
 
-    public Integer getPlayerC() 
+    public Integer getPlayerC()
     {
         return playerC;
     }
-    public void setPlayerD(Integer playerD) 
+    public void setPlayerD(Integer playerD)
     {
         this.playerD = playerD;
     }
 
-    public Integer getPlayerD() 
+    public Integer getPlayerD()
     {
         return playerD;
     }
-    public void setWinnerA(Integer winnerA) 
+    public void setWinnerA(Integer winnerA)
     {
         this.winnerA = winnerA;
     }
 
-    public Integer getWinnerA() 
+    public Integer getWinnerA()
     {
         return winnerA;
     }
-    public void setWinnerB(Integer winnerB) 
+    public void setWinnerB(Integer winnerB)
     {
         this.winnerB = winnerB;
     }
 
-    public Integer getWinnerB() 
+    public Integer getWinnerB()
     {
         return winnerB;
     }
-    public void setRaceTime(Date raceTime) 
+    public void setRaceTime(Date raceTime)
     {
         this.raceTime = raceTime;
     }
 
-    public Date getRaceTime() 
+    public Date getRaceTime()
     {
         return raceTime;
     }
-    public void setWinnerScore(Long winnerScore) 
+    public void setWinnerScore(Long winnerScore)
     {
         this.winnerScore = winnerScore;
     }
 
-    public Long getWinnerScore() 
+    public Long getWinnerScore()
     {
         return winnerScore;
     }
-    public void setLoserScore(Long loserScore) 
+    public void setLoserScore(Long loserScore)
     {
         this.loserScore = loserScore;
     }
 
-    public Long getLoserScore() 
+    public Long getLoserScore()
     {
         return loserScore;
     }
-    public void setStatus(Integer status) 
+    public void setStatus(Integer status)
     {
         this.status = status;
     }
 
-    public Integer getStatus() 
+    public Integer getStatus()
     {
         return status;
     }

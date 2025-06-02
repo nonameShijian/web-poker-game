@@ -11,7 +11,7 @@
  Target Server Version : 110202
  File Encoding         : 65001
 
- Date: 25/05/2025 23:18:52
+ Date: 02/06/2025 16:21:19
 */
 
 SET NAMES utf8mb4;
@@ -127,11 +127,14 @@ CREATE TABLE `poker_chat_message`  (
   PRIMARY KEY (`messageId`) USING BTREE,
   INDEX `roomId`(`roomId`) USING BTREE,
   INDEX `userId`(`userId`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '游戏房间聊天记录表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '游戏房间聊天记录表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of poker_chat_message
 -- ----------------------------
+INSERT INTO `poker_chat_message` VALUES (1, 1, 100, '测试111', '2025-05-24 00:00:00');
+INSERT INTO `poker_chat_message` VALUES (2, 1, 100, '测试22222', '2025-05-24 00:00:00');
+INSERT INTO `poker_chat_message` VALUES (3, 1, 101, '测', '2025-05-24 00:00:00');
 
 -- ----------------------------
 -- Table structure for poker_race_info
@@ -139,23 +142,24 @@ CREATE TABLE `poker_chat_message`  (
 DROP TABLE IF EXISTS `poker_race_info`;
 CREATE TABLE `poker_race_info`  (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '比赛信息id',
-  `race_id` int(2) NULL DEFAULT NULL COMMENT '比赛id',
-  `player_a` int(2) NULL DEFAULT NULL COMMENT '玩家A',
-  `player_b` int(2) NULL DEFAULT NULL COMMENT '玩家B',
-  `player_c` int(2) NULL DEFAULT NULL COMMENT '玩家C',
-  `player_d` int(2) NULL DEFAULT NULL COMMENT '玩家D',
-  `winner_a` int(2) NULL DEFAULT NULL COMMENT '胜者A',
-  `winner_b` int(2) NULL DEFAULT NULL COMMENT '胜者B',
+  `race_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '比赛id',
+  `player_a` int(11) NULL DEFAULT NULL COMMENT '玩家A',
+  `player_b` int(11) NULL DEFAULT NULL COMMENT '玩家B',
+  `player_c` int(11) NULL DEFAULT NULL COMMENT '玩家C',
+  `player_d` int(11) NULL DEFAULT NULL COMMENT '玩家D',
+  `winner_a` int(11) NULL DEFAULT NULL COMMENT '胜者A',
+  `winner_b` int(11) NULL DEFAULT NULL COMMENT '胜者B',
   `race_time` datetime NULL DEFAULT NULL COMMENT '比赛时间',
   `winner_score` int(11) NULL DEFAULT NULL COMMENT '赢家积分情况',
   `loser_score` int(11) NULL DEFAULT NULL COMMENT '输家积分情况',
   `status` tinyint(1) NULL DEFAULT 1 COMMENT '记录状态：0-已删除，1-正常',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '历史比赛信息' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '历史比赛信息' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of poker_race_info
 -- ----------------------------
+INSERT INTO `poker_race_info` VALUES (2, '1', 100, 101, 102, 2, 100, 101, '2025-05-24 00:00:00', 14, 10, 1);
 
 -- ----------------------------
 -- Table structure for poker_room
@@ -169,11 +173,12 @@ CREATE TABLE `poker_room`  (
   `created_at` timestamp NULL DEFAULT current_timestamp() COMMENT '房间创建时间',
   PRIMARY KEY (`roomId`) USING BTREE,
   INDEX `ownerId`(`ownerId`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '游戏房间信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '游戏房间信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of poker_room
 -- ----------------------------
+INSERT INTO `poker_room` VALUES (1, 100, 4, 4, '2025-05-24 00:00:00');
 
 -- ----------------------------
 -- Table structure for poker_user_game_info
@@ -181,17 +186,21 @@ CREATE TABLE `poker_room`  (
 DROP TABLE IF EXISTS `poker_user_game_info`;
 CREATE TABLE `poker_user_game_info`  (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '信息id',
-  `user_id` int(2) NULL DEFAULT NULL COMMENT '用户id',
-  `win` int(2) NULL DEFAULT 0 COMMENT '胜场次数',
-  `lost` int(2) NULL DEFAULT 0 COMMENT '败场次数',
-  `race_num` int(2) NULL DEFAULT 0 COMMENT '比赛场次',
+  `user_id` int(11) NULL DEFAULT NULL COMMENT '用户id',
+  `win` int(11) NULL DEFAULT 0 COMMENT '胜场次数',
+  `lost` int(11) NULL DEFAULT 0 COMMENT '败场次数',
+  `race_num` int(11) NULL DEFAULT 0 COMMENT '比赛场次',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `user_id`(`user_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户胜负情况' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户胜负情况' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of poker_user_game_info
 -- ----------------------------
+INSERT INTO `poker_user_game_info` VALUES (2, 100, 1, 0, 1);
+INSERT INTO `poker_user_game_info` VALUES (3, 101, 1, 0, 1);
+INSERT INTO `poker_user_game_info` VALUES (4, 102, 0, 1, 1);
+INSERT INTO `poker_user_game_info` VALUES (5, 2, 0, 1, 1);
 
 -- ----------------------------
 -- Table structure for qrtz_blob_triggers
@@ -253,8 +262,8 @@ CREATE TABLE `qrtz_fired_triggers`  (
   `trigger_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'qrtz_triggers表trigger_name的外键',
   `trigger_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'qrtz_triggers表trigger_group的外键',
   `instance_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调度器实例名',
-  `fired_time` bigint(13) NOT NULL COMMENT '触发的时间',
-  `sched_time` bigint(13) NOT NULL COMMENT '定时器制定的时间',
+  `fired_time` bigint(20) NOT NULL COMMENT '触发的时间',
+  `sched_time` bigint(20) NOT NULL COMMENT '定时器制定的时间',
   `priority` int(11) NOT NULL COMMENT '优先级',
   `state` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '状态',
   `job_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '任务名称',
@@ -325,8 +334,8 @@ DROP TABLE IF EXISTS `qrtz_scheduler_state`;
 CREATE TABLE `qrtz_scheduler_state`  (
   `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调度名称',
   `instance_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '实例名称',
-  `last_checkin_time` bigint(13) NOT NULL COMMENT '上次检查时间',
-  `checkin_interval` bigint(13) NOT NULL COMMENT '检查间隔时间',
+  `last_checkin_time` bigint(20) NOT NULL COMMENT '上次检查时间',
+  `checkin_interval` bigint(20) NOT NULL COMMENT '检查间隔时间',
   PRIMARY KEY (`sched_name`, `instance_name`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '调度器状态表' ROW_FORMAT = Dynamic;
 
@@ -342,9 +351,9 @@ CREATE TABLE `qrtz_simple_triggers`  (
   `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '调度名称',
   `trigger_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'qrtz_triggers表trigger_name的外键',
   `trigger_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'qrtz_triggers表trigger_group的外键',
-  `repeat_count` bigint(7) NOT NULL COMMENT '重复的次数统计',
-  `repeat_interval` bigint(12) NOT NULL COMMENT '重复的间隔时间',
-  `times_triggered` bigint(10) NOT NULL COMMENT '已经触发的次数',
+  `repeat_count` bigint(20) NOT NULL COMMENT '重复的次数统计',
+  `repeat_interval` bigint(20) NOT NULL COMMENT '重复的间隔时间',
+  `times_triggered` bigint(20) NOT NULL COMMENT '已经触发的次数',
   PRIMARY KEY (`sched_name`, `trigger_name`, `trigger_group`) USING BTREE,
   CONSTRAINT `qrtz_simple_triggers_ibfk_1` FOREIGN KEY (`sched_name`, `trigger_name`, `trigger_group`) REFERENCES `qrtz_triggers` (`sched_name`, `trigger_name`, `trigger_group`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '简单触发器的信息表' ROW_FORMAT = Dynamic;
@@ -391,15 +400,15 @@ CREATE TABLE `qrtz_triggers`  (
   `job_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'qrtz_job_details表job_name的外键',
   `job_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'qrtz_job_details表job_group的外键',
   `description` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '相关介绍',
-  `next_fire_time` bigint(13) NULL DEFAULT NULL COMMENT '上一次触发时间（毫秒）',
-  `prev_fire_time` bigint(13) NULL DEFAULT NULL COMMENT '下一次触发时间（默认为-1表示不触发）',
+  `next_fire_time` bigint(20) NULL DEFAULT NULL COMMENT '上一次触发时间（毫秒）',
+  `prev_fire_time` bigint(20) NULL DEFAULT NULL COMMENT '下一次触发时间（默认为-1表示不触发）',
   `priority` int(11) NULL DEFAULT NULL COMMENT '优先级',
   `trigger_state` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '触发器状态',
   `trigger_type` varchar(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '触发器的类型',
-  `start_time` bigint(13) NOT NULL COMMENT '开始时间',
-  `end_time` bigint(13) NULL DEFAULT NULL COMMENT '结束时间',
+  `start_time` bigint(20) NOT NULL COMMENT '开始时间',
+  `end_time` bigint(20) NULL DEFAULT NULL COMMENT '结束时间',
   `calendar_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '日程表名称',
-  `misfire_instr` smallint(2) NULL DEFAULT NULL COMMENT '补偿执行的策略',
+  `misfire_instr` smallint(6) NULL DEFAULT NULL COMMENT '补偿执行的策略',
   `job_data` blob NULL DEFAULT NULL COMMENT '存放持久化job对象',
   PRIMARY KEY (`sched_name`, `trigger_name`, `trigger_group`) USING BTREE,
   INDEX `sched_name`(`sched_name`, `job_name`, `job_group`) USING BTREE,
@@ -415,7 +424,7 @@ CREATE TABLE `qrtz_triggers`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_config`;
 CREATE TABLE `sys_config`  (
-  `config_id` int(5) NOT NULL AUTO_INCREMENT COMMENT '参数主键',
+  `config_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '参数主键',
   `config_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '参数名称',
   `config_key` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '参数键名',
   `config_value` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '参数键值',
@@ -434,8 +443,8 @@ CREATE TABLE `sys_config`  (
 INSERT INTO `sys_config` VALUES (1, '主框架页-默认皮肤样式名称', 'sys.index.skinName', 'skin-blue', 'Y', 'admin', '2025-03-15 20:28:50', '', NULL, '蓝色 skin-blue、绿色 skin-green、紫色 skin-purple、红色 skin-red、黄色 skin-yellow');
 INSERT INTO `sys_config` VALUES (2, '用户管理-账号初始密码', 'sys.user.initPassword', '123456', 'Y', 'admin', '2025-03-15 20:28:50', '', NULL, '初始化密码 123456');
 INSERT INTO `sys_config` VALUES (3, '主框架页-侧边栏主题', 'sys.index.sideTheme', 'theme-dark', 'Y', 'admin', '2025-03-15 20:28:50', '', NULL, '深色主题theme-dark，浅色主题theme-light');
-INSERT INTO `sys_config` VALUES (4, '账号自助-验证码开关', 'sys.account.captchaEnabled', 'true', 'Y', 'admin', '2025-03-15 20:28:50', '', NULL, '是否开启验证码功能（true开启，false关闭）');
-INSERT INTO `sys_config` VALUES (5, '账号自助-是否开启用户注册功能', 'sys.account.registerUser', 'false', 'Y', 'admin', '2025-03-15 20:28:50', '', NULL, '是否开启注册用户功能（true开启，false关闭）');
+INSERT INTO `sys_config` VALUES (4, '账号自助-验证码开关', 'sys.account.captchaEnabled', 'false', 'Y', 'admin', '2025-03-15 20:28:50', 'admin', '2025-05-28 17:18:33', '是否开启验证码功能（true开启，false关闭）');
+INSERT INTO `sys_config` VALUES (5, '账号自助-是否开启用户注册功能', 'sys.account.registerUser', 'true', 'Y', 'admin', '2025-03-15 20:28:50', 'admin', '2025-05-28 22:15:08', '是否开启注册用户功能（true开启，false关闭）');
 
 -- ----------------------------
 -- Table structure for sys_dept
@@ -446,7 +455,7 @@ CREATE TABLE `sys_dept`  (
   `parent_id` bigint(20) NULL DEFAULT 0 COMMENT '父部门id',
   `ancestors` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '祖级列表',
   `dept_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '部门名称',
-  `order_num` int(4) NULL DEFAULT 0 COMMENT '显示顺序',
+  `order_num` int(11) NULL DEFAULT 0 COMMENT '显示顺序',
   `leader` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '负责人',
   `phone` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '联系电话',
   `email` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '邮箱',
@@ -457,21 +466,23 @@ CREATE TABLE `sys_dept`  (
   `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`dept_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 200 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '部门表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 202 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '部门表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_dept
 -- ----------------------------
-INSERT INTO `sys_dept` VALUES (100, 0, '0', '若依科技', 0, '若依', '15888888888', 'ry@qq.com', '0', '0', 'admin', '2025-03-15 20:28:50', '', NULL);
-INSERT INTO `sys_dept` VALUES (101, 100, '0,100', '深圳总公司', 1, '若依', '15888888888', 'ry@qq.com', '0', '0', 'admin', '2025-03-15 20:28:50', '', NULL);
-INSERT INTO `sys_dept` VALUES (102, 100, '0,100', '长沙分公司', 2, '若依', '15888888888', 'ry@qq.com', '0', '0', 'admin', '2025-03-15 20:28:50', '', NULL);
-INSERT INTO `sys_dept` VALUES (103, 101, '0,100,101', '研发部门', 1, '若依', '15888888888', 'ry@qq.com', '0', '0', 'admin', '2025-03-15 20:28:50', '', NULL);
-INSERT INTO `sys_dept` VALUES (104, 101, '0,100,101', '市场部门', 2, '若依', '15888888888', 'ry@qq.com', '0', '0', 'admin', '2025-03-15 20:28:50', '', NULL);
-INSERT INTO `sys_dept` VALUES (105, 101, '0,100,101', '测试部门', 3, '若依', '15888888888', 'ry@qq.com', '0', '0', 'admin', '2025-03-15 20:28:50', '', NULL);
-INSERT INTO `sys_dept` VALUES (106, 101, '0,100,101', '财务部门', 4, '若依', '15888888888', 'ry@qq.com', '0', '0', 'admin', '2025-03-15 20:28:50', '', NULL);
-INSERT INTO `sys_dept` VALUES (107, 101, '0,100,101', '运维部门', 5, '若依', '15888888888', 'ry@qq.com', '0', '0', 'admin', '2025-03-15 20:28:50', '', NULL);
-INSERT INTO `sys_dept` VALUES (108, 102, '0,100,102', '市场部门', 1, '若依', '15888888888', 'ry@qq.com', '0', '0', 'admin', '2025-03-15 20:28:50', '', NULL);
-INSERT INTO `sys_dept` VALUES (109, 102, '0,100,102', '财务部门', 2, '若依', '15888888888', 'ry@qq.com', '0', '0', 'admin', '2025-03-15 20:28:50', '', NULL);
+INSERT INTO `sys_dept` VALUES (100, 0, '0', '角色定位', 0, '若依', '15888888888', 'ry@qq.com', '0', '0', 'admin', '2025-03-15 20:28:50', '', NULL);
+INSERT INTO `sys_dept` VALUES (101, 100, '0,100', '深圳总公司', 1, '若依', '15888888888', 'ry@qq.com', '0', '2', 'admin', '2025-03-15 20:28:50', '', NULL);
+INSERT INTO `sys_dept` VALUES (102, 100, '0,100', '长沙分公司', 2, '若依', '15888888888', 'ry@qq.com', '0', '2', 'admin', '2025-03-15 20:28:50', '', NULL);
+INSERT INTO `sys_dept` VALUES (103, 101, '0,100,101', '研发部门', 1, '若依', '15888888888', 'ry@qq.com', '0', '2', 'admin', '2025-03-15 20:28:50', '', NULL);
+INSERT INTO `sys_dept` VALUES (104, 101, '0,100,101', '市场部门', 2, '若依', '15888888888', 'ry@qq.com', '0', '2', 'admin', '2025-03-15 20:28:50', '', NULL);
+INSERT INTO `sys_dept` VALUES (105, 101, '0,100,101', '测试部门', 3, '若依', '15888888888', 'ry@qq.com', '0', '2', 'admin', '2025-03-15 20:28:50', '', NULL);
+INSERT INTO `sys_dept` VALUES (106, 101, '0,100,101', '财务部门', 4, '若依', '15888888888', 'ry@qq.com', '0', '2', 'admin', '2025-03-15 20:28:50', '', NULL);
+INSERT INTO `sys_dept` VALUES (107, 101, '0,100,101', '运维部门', 5, '若依', '15888888888', 'ry@qq.com', '0', '2', 'admin', '2025-03-15 20:28:50', '', NULL);
+INSERT INTO `sys_dept` VALUES (108, 102, '0,100,102', '市场部门', 1, '若依', '15888888888', 'ry@qq.com', '0', '2', 'admin', '2025-03-15 20:28:50', '', NULL);
+INSERT INTO `sys_dept` VALUES (109, 102, '0,100,102', '财务部门', 2, '若依', '15888888888', 'ry@qq.com', '0', '2', 'admin', '2025-03-15 20:28:50', '', NULL);
+INSERT INTO `sys_dept` VALUES (200, 100, '0,100', '玩家', 2, NULL, NULL, NULL, '0', '0', 'admin', '2025-05-28 17:21:29', '', NULL);
+INSERT INTO `sys_dept` VALUES (201, 100, '0,100', '开发', 1, NULL, NULL, NULL, '0', '0', 'admin', '2025-05-28 17:21:51', '', NULL);
 
 -- ----------------------------
 -- Table structure for sys_dict_data
@@ -479,7 +490,7 @@ INSERT INTO `sys_dept` VALUES (109, 102, '0,100,102', '财务部门', 2, '若依
 DROP TABLE IF EXISTS `sys_dict_data`;
 CREATE TABLE `sys_dict_data`  (
   `dict_code` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '字典编码',
-  `dict_sort` int(4) NULL DEFAULT 0 COMMENT '字典排序',
+  `dict_sort` int(11) NULL DEFAULT 0 COMMENT '字典排序',
   `dict_label` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '字典标签',
   `dict_value` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '字典键值',
   `dict_type` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '字典类型',
@@ -623,7 +634,7 @@ CREATE TABLE `sys_logininfor`  (
   `msg` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '提示消息',
   `login_time` datetime NULL DEFAULT NULL COMMENT '访问时间',
   PRIMARY KEY (`info_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 106 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统访问记录' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 141 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统访问记录' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_logininfor
@@ -634,6 +645,41 @@ INSERT INTO `sys_logininfor` VALUES (102, 'admin', '127.0.0.1', '内网IP', 'Chr
 INSERT INTO `sys_logininfor` VALUES (103, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '1', '用户不存在/密码错误', '2025-05-25 22:20:30');
 INSERT INTO `sys_logininfor` VALUES (104, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '1', '密码输入错误1次', '2025-05-25 22:20:30');
 INSERT INTO `sys_logininfor` VALUES (105, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-05-25 22:20:35');
+INSERT INTO `sys_logininfor` VALUES (106, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '退出成功', '2025-05-28 22:14:45');
+INSERT INTO `sys_logininfor` VALUES (107, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-05-28 22:14:49');
+INSERT INTO `sys_logininfor` VALUES (108, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '退出成功', '2025-05-28 22:15:12');
+INSERT INTO `sys_logininfor` VALUES (109, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-05-28 22:19:30');
+INSERT INTO `sys_logininfor` VALUES (110, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '退出成功', '2025-05-28 22:20:32');
+INSERT INTO `sys_logininfor` VALUES (111, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-05-28 22:20:40');
+INSERT INTO `sys_logininfor` VALUES (112, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-05-29 15:48:53');
+INSERT INTO `sys_logininfor` VALUES (113, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '退出成功', '2025-05-29 15:51:54');
+INSERT INTO `sys_logininfor` VALUES (114, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-05-29 16:06:43');
+INSERT INTO `sys_logininfor` VALUES (115, 'Song', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '注册成功', '2025-05-29 16:12:17');
+INSERT INTO `sys_logininfor` VALUES (116, 'Song', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-05-29 16:12:25');
+INSERT INTO `sys_logininfor` VALUES (117, 'Xiaoyu', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '注册成功', '2025-05-29 16:22:58');
+INSERT INTO `sys_logininfor` VALUES (118, 'Xiaoyu', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-05-29 16:23:05');
+INSERT INTO `sys_logininfor` VALUES (119, '测试ing', '127.0.0.1', '内网IP', 'Firefox 13', 'Windows 10', '0', '注册成功', '2025-05-29 16:24:47');
+INSERT INTO `sys_logininfor` VALUES (120, '测试ing', '127.0.0.1', '内网IP', 'Firefox 13', 'Windows 10', '0', '登录成功', '2025-05-29 16:25:09');
+INSERT INTO `sys_logininfor` VALUES (121, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-05-29 20:20:23');
+INSERT INTO `sys_logininfor` VALUES (122, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '退出成功', '2025-05-29 20:20:44');
+INSERT INTO `sys_logininfor` VALUES (123, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-05-29 20:20:48');
+INSERT INTO `sys_logininfor` VALUES (124, 'Song', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-05-29 20:21:04');
+INSERT INTO `sys_logininfor` VALUES (125, 'Song', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '退出成功', '2025-05-29 20:21:17');
+INSERT INTO `sys_logininfor` VALUES (126, 'Song', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-05-29 20:21:24');
+INSERT INTO `sys_logininfor` VALUES (127, 'Song', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '退出成功', '2025-05-29 20:54:36');
+INSERT INTO `sys_logininfor` VALUES (128, 'Song', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-05-29 20:54:42');
+INSERT INTO `sys_logininfor` VALUES (129, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '退出成功', '2025-05-29 21:04:20');
+INSERT INTO `sys_logininfor` VALUES (130, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-05-29 21:04:24');
+INSERT INTO `sys_logininfor` VALUES (131, 'Song', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '退出成功', '2025-05-29 21:46:01');
+INSERT INTO `sys_logininfor` VALUES (132, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-05-29 21:46:05');
+INSERT INTO `sys_logininfor` VALUES (133, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-05-30 00:37:00');
+INSERT INTO `sys_logininfor` VALUES (134, 'Song', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-05-30 00:40:22');
+INSERT INTO `sys_logininfor` VALUES (135, 'Song', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '退出成功', '2025-05-30 01:02:46');
+INSERT INTO `sys_logininfor` VALUES (136, 'Song', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-05-30 01:02:54');
+INSERT INTO `sys_logininfor` VALUES (137, 'Song', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '退出成功', '2025-05-30 01:42:04');
+INSERT INTO `sys_logininfor` VALUES (138, 'Song', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-05-30 01:42:11');
+INSERT INTO `sys_logininfor` VALUES (139, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-06-01 20:36:21');
+INSERT INTO `sys_logininfor` VALUES (140, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-06-02 16:00:31');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -643,12 +689,12 @@ CREATE TABLE `sys_menu`  (
   `menu_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '菜单ID',
   `menu_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '菜单名称',
   `parent_id` bigint(20) NULL DEFAULT 0 COMMENT '父菜单ID',
-  `order_num` int(4) NULL DEFAULT 0 COMMENT '显示顺序',
+  `order_num` int(11) NULL DEFAULT 0 COMMENT '显示顺序',
   `path` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '路由地址',
   `component` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '组件路径',
   `query` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '路由参数',
-  `is_frame` int(1) NULL DEFAULT 1 COMMENT '是否为外链（0是 1否）',
-  `is_cache` int(1) NULL DEFAULT 0 COMMENT '是否缓存（0缓存 1不缓存）',
+  `is_frame` int(11) NULL DEFAULT 1 COMMENT '是否为外链（0是 1否）',
+  `is_cache` int(11) NULL DEFAULT 0 COMMENT '是否缓存（0缓存 1不缓存）',
   `menu_type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '菜单类型（M目录 C菜单 F按钮）',
   `visible` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '菜单状态（0显示 1隐藏）',
   `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '菜单状态（0正常 1停用）',
@@ -672,8 +718,8 @@ INSERT INTO `sys_menu` VALUES (4, '若依官网', 0, 4, 'http://ruoyi.vip', NULL
 INSERT INTO `sys_menu` VALUES (100, '用户管理', 1, 1, 'user', 'system/user/index', '', 1, 0, 'C', '0', '0', 'system:user:list', 'user', 'admin', '2025-03-15 20:28:50', '', NULL, '用户管理菜单');
 INSERT INTO `sys_menu` VALUES (101, '角色管理', 1, 2, 'role', 'system/role/index', '', 1, 0, 'C', '0', '0', 'system:role:list', 'peoples', 'admin', '2025-03-15 20:28:50', '', NULL, '角色管理菜单');
 INSERT INTO `sys_menu` VALUES (102, '菜单管理', 1, 3, 'menu', 'system/menu/index', '', 1, 0, 'C', '0', '0', 'system:menu:list', 'tree-table', 'admin', '2025-03-15 20:28:50', '', NULL, '菜单管理菜单');
-INSERT INTO `sys_menu` VALUES (103, '部门管理', 1, 4, 'dept', 'system/dept/index', '', 1, 0, 'C', '0', '0', 'system:dept:list', 'tree', 'admin', '2025-03-15 20:28:50', '', NULL, '部门管理菜单');
-INSERT INTO `sys_menu` VALUES (104, '岗位管理', 1, 5, 'post', 'system/post/index', '', 1, 0, 'C', '0', '0', 'system:post:list', 'post', 'admin', '2025-03-15 20:28:50', '', NULL, '岗位管理菜单');
+INSERT INTO `sys_menu` VALUES (103, '部门管理', 1, 4, 'dept', 'system/dept/index', '', 1, 0, 'C', '1', '0', 'system:dept:list', 'tree', 'admin', '2025-03-15 20:28:50', 'admin', '2025-05-29 15:49:48', '部门管理菜单');
+INSERT INTO `sys_menu` VALUES (104, '岗位管理', 1, 5, 'post', 'system/post/index', '', 1, 0, 'C', '1', '0', 'system:post:list', 'post', 'admin', '2025-03-15 20:28:50', 'admin', '2025-05-29 15:49:53', '岗位管理菜单');
 INSERT INTO `sys_menu` VALUES (105, '字典管理', 1, 6, 'dict', 'system/dict/index', '', 1, 0, 'C', '0', '0', 'system:dict:list', 'dict', 'admin', '2025-03-15 20:28:50', '', NULL, '字典管理菜单');
 INSERT INTO `sys_menu` VALUES (106, '参数设置', 1, 7, 'config', 'system/config/index', '', 1, 0, 'C', '0', '0', 'system:config:list', 'edit', 'admin', '2025-03-15 20:28:50', '', NULL, '参数设置菜单');
 INSERT INTO `sys_menu` VALUES (107, '通知公告', 1, 8, 'notice', 'system/notice/index', '', 1, 0, 'C', '0', '0', 'system:notice:list', 'message', 'admin', '2025-03-15 20:28:50', '', NULL, '通知公告菜单');
@@ -781,7 +827,7 @@ INSERT INTO `sys_menu` VALUES (2048, '游戏房间信息导出', 2043, 5, '#', '
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_notice`;
 CREATE TABLE `sys_notice`  (
-  `notice_id` int(4) NOT NULL AUTO_INCREMENT COMMENT '公告ID',
+  `notice_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '公告ID',
   `notice_title` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '公告标题',
   `notice_type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '公告类型（1通知 2公告）',
   `notice_content` longblob NULL DEFAULT NULL COMMENT '公告内容',
@@ -807,10 +853,10 @@ DROP TABLE IF EXISTS `sys_oper_log`;
 CREATE TABLE `sys_oper_log`  (
   `oper_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '日志主键',
   `title` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '模块标题',
-  `business_type` int(2) NULL DEFAULT 0 COMMENT '业务类型（0其它 1新增 2修改 3删除）',
+  `business_type` int(11) NULL DEFAULT 0 COMMENT '业务类型（0其它 1新增 2修改 3删除）',
   `method` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '方法名称',
   `request_method` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '请求方式',
-  `operator_type` int(1) NULL DEFAULT 0 COMMENT '操作类别（0其它 1后台用户 2手机端用户）',
+  `operator_type` int(11) NULL DEFAULT 0 COMMENT '操作类别（0其它 1后台用户 2手机端用户）',
   `oper_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '操作人员',
   `dept_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '部门名称',
   `oper_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '请求URL',
@@ -818,11 +864,11 @@ CREATE TABLE `sys_oper_log`  (
   `oper_location` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '操作地点',
   `oper_param` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '请求参数',
   `json_result` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '返回参数',
-  `status` int(1) NULL DEFAULT 0 COMMENT '操作状态（0正常 1异常）',
+  `status` int(11) NULL DEFAULT 0 COMMENT '操作状态（0正常 1异常）',
   `error_msg` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '错误消息',
   `oper_time` datetime NULL DEFAULT NULL COMMENT '操作时间',
   PRIMARY KEY (`oper_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 157 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '操作日志记录' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 206 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '操作日志记录' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_oper_log
@@ -884,6 +930,55 @@ INSERT INTO `sys_oper_log` VALUES (153, '代码生成', 8, 'com.webPokerGame.gen
 INSERT INTO `sys_oper_log` VALUES (154, '代码生成', 8, 'com.webPokerGame.generator.controller.GenController.batchGenCode()', 'GET', 1, 'admin', NULL, '/tool/gen/batchGenCode', '127.0.0.1', '内网IP', '{\"tables\":\"poker_user_game_info\"}', NULL, 0, NULL, '2025-05-25 22:54:53');
 INSERT INTO `sys_oper_log` VALUES (155, '代码生成', 8, 'com.webPokerGame.generator.controller.GenController.batchGenCode()', 'GET', 1, 'admin', NULL, '/tool/gen/batchGenCode', '127.0.0.1', '内网IP', '{\"tables\":\"poker_chat_message\"}', NULL, 0, NULL, '2025-05-25 22:59:39');
 INSERT INTO `sys_oper_log` VALUES (156, '代码生成', 8, 'com.webPokerGame.generator.controller.GenController.batchGenCode()', 'GET', 1, 'admin', NULL, '/tool/gen/batchGenCode', '127.0.0.1', '内网IP', '{\"tables\":\"poker_room\"}', NULL, 0, NULL, '2025-05-25 23:10:58');
+INSERT INTO `sys_oper_log` VALUES (157, '参数管理', 2, 'com.webPokerGame.web.controller.system.SysConfigController.edit()', 'PUT', 1, 'admin', NULL, '/system/config', '127.0.0.1', '内网IP', '{\"configId\":4,\"configKey\":\"sys.account.captchaEnabled\",\"configName\":\"账号自助-验证码开关\",\"configType\":\"Y\",\"configValue\":\"false\",\"createBy\":\"admin\",\"createTime\":\"2025-03-15 20:28:50\",\"params\":{},\"remark\":\"是否开启验证码功能（true开启，false关闭）\",\"updateBy\":\"admin\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-28 17:18:33');
+INSERT INTO `sys_oper_log` VALUES (158, '参数管理', 9, 'com.webPokerGame.web.controller.system.SysConfigController.refreshCache()', 'DELETE', 1, 'admin', NULL, '/system/config/refreshCache', '127.0.0.1', '内网IP', '{}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-28 17:19:20');
+INSERT INTO `sys_oper_log` VALUES (159, '用户管理', 2, 'com.webPokerGame.web.controller.system.SysUserController.edit()', 'PUT', 1, 'admin', NULL, '/system/user', '127.0.0.1', '内网IP', '{\"admin\":false,\"avatar\":\"\",\"createBy\":\"admin\",\"createTime\":\"2025-03-15 20:28:50\",\"delFlag\":\"0\",\"dept\":{\"ancestors\":\"0,100,101\",\"children\":[],\"deptId\":105,\"deptName\":\"测试部门\",\"leader\":\"若依\",\"orderNum\":3,\"params\":{},\"parentId\":101,\"status\":\"0\"},\"deptId\":105,\"email\":\"ry@qq.com\",\"loginDate\":\"2025-03-15 20:28:50\",\"loginIp\":\"127.0.0.1\",\"nickName\":\"若依\",\"params\":{},\"phonenumber\":\"15666666666\",\"postIds\":[4],\"remark\":\"测试员\",\"roleIds\":[],\"roles\":[{\"admin\":false,\"dataScope\":\"2\",\"deptCheckStrictly\":false,\"flag\":false,\"menuCheckStrictly\":false,\"params\":{},\"roleId\":2,\"roleKey\":\"common\",\"roleName\":\"普通角色\",\"roleSort\":2,\"status\":\"0\"}],\"sex\":\"1\",\"status\":\"0\",\"updateBy\":\"admin\",\"userId\":2,\"userName\":\"ry\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-28 17:19:51');
+INSERT INTO `sys_oper_log` VALUES (160, '角色管理', 1, 'com.webPokerGame.web.controller.system.SysRoleController.add()', 'POST', 1, 'admin', NULL, '/system/role', '127.0.0.1', '内网IP', '{\"admin\":false,\"createBy\":\"admin\",\"deptCheckStrictly\":true,\"deptIds\":[],\"flag\":false,\"menuCheckStrictly\":false,\"menuIds\":[],\"params\":{},\"roleId\":100,\"roleKey\":\"player\",\"roleName\":\"玩家\",\"roleSort\":1,\"status\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-28 17:20:17');
+INSERT INTO `sys_oper_log` VALUES (161, '角色管理', 2, 'com.webPokerGame.web.controller.system.SysRoleController.changeStatus()', 'PUT', 1, 'admin', NULL, '/system/role/changeStatus', '127.0.0.1', '内网IP', '{\"admin\":false,\"deptCheckStrictly\":false,\"flag\":false,\"menuCheckStrictly\":false,\"params\":{},\"roleId\":2,\"status\":\"1\",\"updateBy\":\"admin\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-28 17:20:22');
+INSERT INTO `sys_oper_log` VALUES (162, '用户管理', 2, 'com.webPokerGame.web.controller.system.SysUserController.edit()', 'PUT', 1, 'admin', NULL, '/system/user', '127.0.0.1', '内网IP', '{\"admin\":false,\"avatar\":\"\",\"createBy\":\"admin\",\"createTime\":\"2025-03-15 20:28:50\",\"delFlag\":\"0\",\"dept\":{\"ancestors\":\"0,100,101\",\"children\":[],\"deptId\":105,\"deptName\":\"测试部门\",\"leader\":\"若依\",\"orderNum\":3,\"params\":{},\"parentId\":101,\"status\":\"0\"},\"deptId\":105,\"email\":\"ry@qq.com\",\"loginDate\":\"2025-03-15 20:28:50\",\"loginIp\":\"127.0.0.1\",\"nickName\":\"若依\",\"params\":{},\"phonenumber\":\"15666666666\",\"postIds\":[4],\"remark\":\"测试员\",\"roleIds\":[100],\"roles\":[],\"sex\":\"1\",\"status\":\"0\",\"updateBy\":\"admin\",\"userId\":2,\"userName\":\"ry\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-28 17:20:30');
+INSERT INTO `sys_oper_log` VALUES (163, '用户管理', 2, 'com.webPokerGame.web.controller.system.SysUserController.edit()', 'PUT', 1, 'admin', NULL, '/system/user', '127.0.0.1', '内网IP', '{\"admin\":false,\"avatar\":\"\",\"createBy\":\"admin\",\"createTime\":\"2025-03-15 20:28:50\",\"delFlag\":\"0\",\"dept\":{\"ancestors\":\"0,100,101\",\"children\":[],\"deptId\":105,\"deptName\":\"测试部门\",\"leader\":\"若依\",\"orderNum\":3,\"params\":{},\"parentId\":101,\"status\":\"0\"},\"deptId\":103,\"email\":\"ry@qq.com\",\"loginDate\":\"2025-03-15 20:28:50\",\"loginIp\":\"127.0.0.1\",\"nickName\":\"若依\",\"params\":{},\"phonenumber\":\"15666666666\",\"postIds\":[4],\"remark\":\"测试员\",\"roleIds\":[100],\"roles\":[{\"admin\":false,\"dataScope\":\"1\",\"deptCheckStrictly\":false,\"flag\":false,\"menuCheckStrictly\":false,\"params\":{},\"roleId\":100,\"roleKey\":\"player\",\"roleName\":\"玩家\",\"roleSort\":1,\"status\":\"0\"}],\"sex\":\"1\",\"status\":\"0\",\"updateBy\":\"admin\",\"userId\":2,\"userName\":\"ry\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-28 17:20:51');
+INSERT INTO `sys_oper_log` VALUES (164, '部门管理', 3, 'com.webPokerGame.web.controller.system.SysDeptController.remove()', 'DELETE', 1, 'admin', NULL, '/system/dept/109', '127.0.0.1', '内网IP', '{}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-28 17:20:57');
+INSERT INTO `sys_oper_log` VALUES (165, '部门管理', 3, 'com.webPokerGame.web.controller.system.SysDeptController.remove()', 'DELETE', 1, 'admin', NULL, '/system/dept/108', '127.0.0.1', '内网IP', '{}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-28 17:20:59');
+INSERT INTO `sys_oper_log` VALUES (166, '部门管理', 3, 'com.webPokerGame.web.controller.system.SysDeptController.remove()', 'DELETE', 1, 'admin', NULL, '/system/dept/102', '127.0.0.1', '内网IP', '{}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-28 17:21:01');
+INSERT INTO `sys_oper_log` VALUES (167, '部门管理', 3, 'com.webPokerGame.web.controller.system.SysDeptController.remove()', 'DELETE', 1, 'admin', NULL, '/system/dept/107', '127.0.0.1', '内网IP', '{}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-28 17:21:04');
+INSERT INTO `sys_oper_log` VALUES (168, '部门管理', 3, 'com.webPokerGame.web.controller.system.SysDeptController.remove()', 'DELETE', 1, 'admin', NULL, '/system/dept/106', '127.0.0.1', '内网IP', '{}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-28 17:21:06');
+INSERT INTO `sys_oper_log` VALUES (169, '部门管理', 3, 'com.webPokerGame.web.controller.system.SysDeptController.remove()', 'DELETE', 1, 'admin', NULL, '/system/dept/105', '127.0.0.1', '内网IP', '{}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-28 17:21:08');
+INSERT INTO `sys_oper_log` VALUES (170, '部门管理', 3, 'com.webPokerGame.web.controller.system.SysDeptController.remove()', 'DELETE', 1, 'admin', NULL, '/system/dept/104', '127.0.0.1', '内网IP', '{}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-28 17:21:10');
+INSERT INTO `sys_oper_log` VALUES (171, '部门管理', 1, 'com.webPokerGame.web.controller.system.SysDeptController.add()', 'POST', 1, 'admin', NULL, '/system/dept', '127.0.0.1', '内网IP', '{\"ancestors\":\"0,100\",\"children\":[],\"createBy\":\"admin\",\"deptName\":\"玩家\",\"orderNum\":2,\"params\":{},\"parentId\":100,\"status\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-28 17:21:29');
+INSERT INTO `sys_oper_log` VALUES (172, '部门管理', 1, 'com.webPokerGame.web.controller.system.SysDeptController.add()', 'POST', 1, 'admin', NULL, '/system/dept', '127.0.0.1', '内网IP', '{\"ancestors\":\"0,100\",\"children\":[],\"createBy\":\"admin\",\"deptName\":\"开发\",\"orderNum\":1,\"params\":{},\"parentId\":100,\"status\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-28 17:21:51');
+INSERT INTO `sys_oper_log` VALUES (173, '用户管理', 2, 'com.webPokerGame.web.controller.system.SysUserController.edit()', 'PUT', 1, 'admin', NULL, '/system/user', '127.0.0.1', '内网IP', '{\"admin\":false,\"avatar\":\"\",\"createBy\":\"admin\",\"createTime\":\"2025-03-15 20:28:50\",\"delFlag\":\"0\",\"dept\":{\"ancestors\":\"0,100,101\",\"children\":[],\"deptId\":103,\"deptName\":\"研发部门\",\"leader\":\"若依\",\"orderNum\":1,\"params\":{},\"parentId\":101,\"status\":\"0\"},\"deptId\":200,\"email\":\"ry@qq.com\",\"loginDate\":\"2025-03-15 20:28:50\",\"loginIp\":\"127.0.0.1\",\"nickName\":\"若依\",\"params\":{},\"phonenumber\":\"15666666666\",\"postIds\":[4],\"remark\":\"测试员\",\"roleIds\":[100],\"roles\":[{\"admin\":false,\"dataScope\":\"1\",\"deptCheckStrictly\":false,\"flag\":false,\"menuCheckStrictly\":false,\"params\":{},\"roleId\":100,\"roleKey\":\"player\",\"roleName\":\"玩家\",\"roleSort\":1,\"status\":\"0\"}],\"sex\":\"1\",\"status\":\"0\",\"updateBy\":\"admin\",\"userId\":2,\"userName\":\"ry\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-28 17:22:16');
+INSERT INTO `sys_oper_log` VALUES (174, '部门管理', 3, 'com.webPokerGame.web.controller.system.SysDeptController.remove()', 'DELETE', 1, 'admin', NULL, '/system/dept/103', '127.0.0.1', '内网IP', '{}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-28 17:24:15');
+INSERT INTO `sys_oper_log` VALUES (175, '部门管理', 3, 'com.webPokerGame.web.controller.system.SysDeptController.remove()', 'DELETE', 1, 'admin', NULL, '/system/dept/101', '127.0.0.1', '内网IP', '{}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-28 17:24:17');
+INSERT INTO `sys_oper_log` VALUES (176, '岗位管理', 3, 'com.webPokerGame.web.controller.system.SysPostController.remove()', 'DELETE', 1, 'admin', NULL, '/system/post/3', '127.0.0.1', '内网IP', '{}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-28 17:24:26');
+INSERT INTO `sys_oper_log` VALUES (177, '岗位管理', 3, 'com.webPokerGame.web.controller.system.SysPostController.remove()', 'DELETE', 1, 'admin', NULL, '/system/post/2', '127.0.0.1', '内网IP', '{}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-28 17:24:28');
+INSERT INTO `sys_oper_log` VALUES (178, '岗位管理', 2, 'com.webPokerGame.web.controller.system.SysPostController.edit()', 'PUT', 1, 'admin', NULL, '/system/post', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"createTime\":\"2025-03-15 20:28:50\",\"flag\":false,\"params\":{},\"postCode\":\"ceo\",\"postId\":1,\"postName\":\"开发\",\"postSort\":1,\"remark\":\"\",\"status\":\"0\",\"updateBy\":\"admin\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-28 17:24:35');
+INSERT INTO `sys_oper_log` VALUES (179, '岗位管理', 2, 'com.webPokerGame.web.controller.system.SysPostController.edit()', 'PUT', 1, 'admin', NULL, '/system/post', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"createTime\":\"2025-03-15 20:28:50\",\"flag\":false,\"params\":{},\"postCode\":\"dev\",\"postId\":1,\"postName\":\"开发\",\"postSort\":1,\"remark\":\"\",\"status\":\"0\",\"updateBy\":\"admin\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-28 17:24:39');
+INSERT INTO `sys_oper_log` VALUES (180, '岗位管理', 2, 'com.webPokerGame.web.controller.system.SysPostController.edit()', 'PUT', 1, 'admin', NULL, '/system/post', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"createTime\":\"2025-03-15 20:28:50\",\"flag\":false,\"params\":{},\"postCode\":\"player\",\"postId\":4,\"postName\":\"玩家\",\"postSort\":4,\"remark\":\"\",\"status\":\"0\",\"updateBy\":\"admin\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-28 17:24:50');
+INSERT INTO `sys_oper_log` VALUES (181, '代码生成', 8, 'com.webPokerGame.generator.controller.GenController.batchGenCode()', 'GET', 1, 'admin', NULL, '/tool/gen/batchGenCode', '127.0.0.1', '内网IP', '{\"tables\":\"poker_chat_message\"}', NULL, 0, NULL, '2025-05-28 17:31:14');
+INSERT INTO `sys_oper_log` VALUES (182, '代码生成', 8, 'com.webPokerGame.generator.controller.GenController.batchGenCode()', 'GET', 1, 'admin', NULL, '/tool/gen/batchGenCode', '127.0.0.1', '内网IP', '{\"tables\":\"poker_room\"}', NULL, 0, NULL, '2025-05-28 17:31:52');
+INSERT INTO `sys_oper_log` VALUES (183, '代码生成', 8, 'com.webPokerGame.generator.controller.GenController.batchGenCode()', 'GET', 1, 'admin', NULL, '/tool/gen/batchGenCode', '127.0.0.1', '内网IP', '{\"tables\":\"poker_chat_message\"}', NULL, 0, NULL, '2025-05-28 17:35:14');
+INSERT INTO `sys_oper_log` VALUES (184, '参数管理', 2, 'com.webPokerGame.web.controller.system.SysConfigController.edit()', 'PUT', 1, 'admin', NULL, '/system/config', '127.0.0.1', '内网IP', '{\"configId\":5,\"configKey\":\"sys.account.registerUser\",\"configName\":\"账号自助-是否开启用户注册功能\",\"configType\":\"Y\",\"configValue\":\"true\",\"createBy\":\"admin\",\"createTime\":\"2025-03-15 20:28:50\",\"params\":{},\"remark\":\"是否开启注册用户功能（true开启，false关闭）\",\"updateBy\":\"admin\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-28 22:15:08');
+INSERT INTO `sys_oper_log` VALUES (185, '菜单管理', 2, 'com.webPokerGame.web.controller.system.SysMenuController.edit()', 'PUT', 1, 'admin', NULL, '/system/menu', '127.0.0.1', '内网IP', '{\"children\":[],\"component\":\"system/dept/index\",\"createTime\":\"2025-03-15 20:28:50\",\"icon\":\"tree\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":103,\"menuName\":\"部门管理\",\"menuType\":\"C\",\"orderNum\":4,\"params\":{},\"parentId\":1,\"path\":\"dept\",\"perms\":\"system:dept:list\",\"query\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-29 15:49:48');
+INSERT INTO `sys_oper_log` VALUES (186, '菜单管理', 2, 'com.webPokerGame.web.controller.system.SysMenuController.edit()', 'PUT', 1, 'admin', NULL, '/system/menu', '127.0.0.1', '内网IP', '{\"children\":[],\"component\":\"system/post/index\",\"createTime\":\"2025-03-15 20:28:50\",\"icon\":\"post\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":104,\"menuName\":\"岗位管理\",\"menuType\":\"C\",\"orderNum\":5,\"params\":{},\"parentId\":1,\"path\":\"post\",\"perms\":\"system:post:list\",\"query\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-29 15:49:53');
+INSERT INTO `sys_oper_log` VALUES (187, '个人信息', 2, 'com.webPokerGame.web.controller.system.SysProfileController.updateProfile()', 'PUT', 1, 'Song', NULL, '/system/user/profile', '127.0.0.1', '内网IP', '{\"admin\":false,\"createBy\":\"\",\"createTime\":\"2025-05-29 16:12:17\",\"delFlag\":\"0\",\"email\":\"2955500055@qq.com\",\"loginIp\":\"\",\"nickName\":\"Song\",\"params\":{},\"phonenumber\":\"13122223333\",\"roles\":[],\"sex\":\"0\",\"status\":\"0\",\"userId\":100,\"userName\":\"Song\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-29 16:13:39');
+INSERT INTO `sys_oper_log` VALUES (188, '用户管理', 2, 'com.webPokerGame.web.controller.system.SysUserController.edit()', 'PUT', 1, 'admin', NULL, '/system/user', '127.0.0.1', '内网IP', '{\"admin\":false,\"avatar\":\"\",\"createBy\":\"\",\"createTime\":\"2025-05-29 16:12:17\",\"delFlag\":\"0\",\"email\":\"2955500055@qq.com\",\"loginDate\":\"2025-05-29 16:12:25\",\"loginIp\":\"127.0.0.1\",\"nickName\":\"Song\",\"params\":{},\"phonenumber\":\"13122223333\",\"postIds\":[4],\"roleIds\":[100],\"roles\":[],\"sex\":\"0\",\"status\":\"0\",\"updateBy\":\"admin\",\"userId\":100,\"userName\":\"Song\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-29 16:17:18');
+INSERT INTO `sys_oper_log` VALUES (189, '用户管理', 2, 'com.webPokerGame.web.controller.system.SysUserController.edit()', 'PUT', 1, 'admin', NULL, '/system/user', '127.0.0.1', '内网IP', '{\"admin\":false,\"avatar\":\"\",\"createBy\":\"\",\"createTime\":\"2025-05-29 16:12:17\",\"delFlag\":\"0\",\"deptId\":200,\"email\":\"2955500055@qq.com\",\"loginDate\":\"2025-05-29 16:12:25\",\"loginIp\":\"127.0.0.1\",\"nickName\":\"Song\",\"params\":{},\"phonenumber\":\"13122223333\",\"postIds\":[4],\"roleIds\":[100],\"roles\":[{\"admin\":false,\"dataScope\":\"1\",\"deptCheckStrictly\":false,\"flag\":false,\"menuCheckStrictly\":false,\"params\":{},\"roleId\":100,\"roleKey\":\"player\",\"roleName\":\"玩家\",\"roleSort\":1,\"status\":\"0\"}],\"sex\":\"0\",\"status\":\"0\",\"updateBy\":\"admin\",\"userId\":100,\"userName\":\"Song\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-29 16:17:31');
+INSERT INTO `sys_oper_log` VALUES (190, '个人信息', 2, 'com.webPokerGame.web.controller.system.SysProfileController.updateProfile()', 'PUT', 1, 'Xiaoyu', NULL, '/system/user/profile', '127.0.0.1', '内网IP', '{\"admin\":false,\"createBy\":\"\",\"createTime\":\"2025-05-29 16:22:58\",\"delFlag\":\"0\",\"email\":\"1234567890@qq.com\",\"loginIp\":\"\",\"nickName\":\"Xiaoyu\",\"params\":{},\"phonenumber\":\"15122233344\",\"roles\":[{\"admin\":false,\"dataScope\":\"1\",\"deptCheckStrictly\":false,\"flag\":false,\"menuCheckStrictly\":false,\"params\":{},\"roleId\":100,\"roleKey\":\"player\",\"roleName\":\"玩家\",\"roleSort\":1,\"status\":\"0\"}],\"sex\":\"0\",\"status\":\"0\",\"userId\":101,\"userName\":\"Xiaoyu\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-29 16:23:33');
+INSERT INTO `sys_oper_log` VALUES (191, '用户管理', 2, 'com.webPokerGame.web.controller.system.SysUserController.edit()', 'PUT', 1, 'admin', NULL, '/system/user', '127.0.0.1', '内网IP', '{\"admin\":false,\"avatar\":\"\",\"createBy\":\"\",\"createTime\":\"2025-05-29 16:22:58\",\"delFlag\":\"0\",\"deptId\":200,\"email\":\"1234567890@qq.com\",\"loginDate\":\"2025-05-29 16:23:05\",\"loginIp\":\"127.0.0.1\",\"nickName\":\"Xiaoyu\",\"params\":{},\"phonenumber\":\"15122233344\",\"postIds\":[4],\"roleIds\":[100],\"roles\":[{\"admin\":false,\"dataScope\":\"1\",\"deptCheckStrictly\":false,\"flag\":false,\"menuCheckStrictly\":false,\"params\":{},\"roleId\":100,\"roleKey\":\"player\",\"roleName\":\"玩家\",\"roleSort\":1,\"status\":\"0\"}],\"sex\":\"0\",\"status\":\"0\",\"updateBy\":\"admin\",\"userId\":101,\"userName\":\"Xiaoyu\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-29 16:23:52');
+INSERT INTO `sys_oper_log` VALUES (192, '用户管理', 2, 'com.webPokerGame.web.controller.system.SysUserController.edit()', 'PUT', 1, 'admin', NULL, '/system/user', '127.0.0.1', '内网IP', '{\"admin\":false,\"avatar\":\"\",\"createBy\":\"\",\"createTime\":\"2025-05-29 16:24:47\",\"delFlag\":\"0\",\"deptId\":200,\"email\":\"1234567890@qq.com\",\"loginDate\":\"2025-05-29 16:25:09\",\"loginIp\":\"127.0.0.1\",\"nickName\":\"测试ing\",\"params\":{},\"phonenumber\":\"\",\"postIds\":[4],\"roleIds\":[100],\"roles\":[{\"admin\":false,\"dataScope\":\"1\",\"deptCheckStrictly\":false,\"flag\":false,\"menuCheckStrictly\":false,\"params\":{},\"roleId\":100,\"roleKey\":\"player\",\"roleName\":\"玩家\",\"roleSort\":1,\"status\":\"0\"}],\"sex\":\"0\",\"status\":\"0\",\"userId\":102,\"userName\":\"测试ing\"}', '{\"msg\":\"修改用户\'测试ing\'失败，邮箱账号已存在\",\"code\":500}', 0, NULL, '2025-05-29 16:25:41');
+INSERT INTO `sys_oper_log` VALUES (193, '用户管理', 2, 'com.webPokerGame.web.controller.system.SysUserController.edit()', 'PUT', 1, 'admin', NULL, '/system/user', '127.0.0.1', '内网IP', '{\"admin\":false,\"avatar\":\"\",\"createBy\":\"\",\"createTime\":\"2025-05-29 16:24:47\",\"delFlag\":\"0\",\"deptId\":200,\"email\":\"1234567790@qq.com\",\"loginDate\":\"2025-05-29 16:25:09\",\"loginIp\":\"127.0.0.1\",\"nickName\":\"测试ing\",\"params\":{},\"phonenumber\":\"\",\"postIds\":[4],\"roleIds\":[100],\"roles\":[{\"admin\":false,\"dataScope\":\"1\",\"deptCheckStrictly\":false,\"flag\":false,\"menuCheckStrictly\":false,\"params\":{},\"roleId\":100,\"roleKey\":\"player\",\"roleName\":\"玩家\",\"roleSort\":1,\"status\":\"0\"}],\"sex\":\"0\",\"status\":\"0\",\"updateBy\":\"admin\",\"userId\":102,\"userName\":\"测试ing\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-29 16:25:46');
+INSERT INTO `sys_oper_log` VALUES (194, '用户管理', 2, 'com.webPokerGame.web.controller.system.SysUserController.edit()', 'PUT', 1, 'admin', NULL, '/system/user', '127.0.0.1', '内网IP', '{\"admin\":false,\"avatar\":\"\",\"createBy\":\"\",\"createTime\":\"2025-05-29 16:24:47\",\"delFlag\":\"0\",\"dept\":{\"ancestors\":\"0,100\",\"children\":[],\"deptId\":200,\"deptName\":\"玩家\",\"orderNum\":2,\"params\":{},\"parentId\":100,\"status\":\"0\"},\"deptId\":200,\"email\":\"1234567790@qq.com\",\"loginDate\":\"2025-05-29 16:25:09\",\"loginIp\":\"127.0.0.1\",\"nickName\":\"测试ing\",\"params\":{},\"phonenumber\":\"13122233322\",\"postIds\":[4],\"roleIds\":[100],\"roles\":[{\"admin\":false,\"dataScope\":\"1\",\"deptCheckStrictly\":false,\"flag\":false,\"menuCheckStrictly\":false,\"params\":{},\"roleId\":100,\"roleKey\":\"player\",\"roleName\":\"玩家\",\"roleSort\":1,\"status\":\"0\"}],\"sex\":\"0\",\"status\":\"0\",\"updateBy\":\"admin\",\"userId\":102,\"userName\":\"测试ing\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-29 16:26:07');
+INSERT INTO `sys_oper_log` VALUES (195, '游戏房间信息', 1, 'com.webPokerGame.controller.PokerRoomController.add()', 'POST', 1, 'admin', NULL, '/room/roomAdmin', '127.0.0.1', '内网IP', '{\"createdAt\":\"2025-05-24\",\"currentPlayers\":4,\"maxPlayers\":4,\"ownerId\":100,\"params\":{},\"roomId\":1}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-29 17:18:04');
+INSERT INTO `sys_oper_log` VALUES (196, '用护胜负情况', 1, 'com.webPokerGame.controller.PokerUserGameInfoController.add()', 'POST', 1, 'admin', NULL, '/userGameInfo/userGameInfo', '127.0.0.1', '内网IP', '{\"lost\":0,\"params\":{},\"raceNum\":1,\"userId\":100,\"win\":1}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-29 17:19:05');
+INSERT INTO `sys_oper_log` VALUES (197, '用护胜负情况', 1, 'com.webPokerGame.controller.PokerUserGameInfoController.add()', 'POST', 1, 'admin', NULL, '/userGameInfo/userGameInfo', '127.0.0.1', '内网IP', '{\"lost\":0,\"params\":{},\"raceNum\":1,\"userId\":101,\"win\":1}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-29 17:19:26');
+INSERT INTO `sys_oper_log` VALUES (198, '用护胜负情况', 1, 'com.webPokerGame.controller.PokerUserGameInfoController.add()', 'POST', 1, 'admin', NULL, '/userGameInfo/userGameInfo', '127.0.0.1', '内网IP', '{\"lost\":1,\"params\":{},\"raceNum\":1,\"userId\":102,\"win\":0}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-29 17:19:38');
+INSERT INTO `sys_oper_log` VALUES (199, '用护胜负情况', 1, 'com.webPokerGame.controller.PokerUserGameInfoController.add()', 'POST', 1, 'admin', NULL, '/userGameInfo/userGameInfo', '127.0.0.1', '内网IP', '{\"lost\":1,\"params\":{},\"raceNum\":1,\"userId\":2,\"win\":0}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-29 17:19:45');
+INSERT INTO `sys_oper_log` VALUES (200, '历史比赛信息', 1, 'com.webPokerGame.controller.PokerRaceInfoController.add()', 'POST', 1, 'admin', NULL, '/raceInfoAdmin/raceInfoAdmin', '127.0.0.1', '内网IP', '{\"id\":2,\"loserScore\":10,\"params\":{},\"playerA\":100,\"playerB\":101,\"playerC\":102,\"playerD\":2,\"raceId\":1,\"raceTime\":\"2025-05-24\",\"winnerA\":100,\"winnerB\":101,\"winnerScore\":14}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-29 17:20:37');
+INSERT INTO `sys_oper_log` VALUES (201, '游戏房间聊天记录', 1, 'com.webPokerGame.controller.PokerChatMessageController.add()', 'POST', 1, 'admin', NULL, '/message/messageAdmin', '127.0.0.1', '内网IP', '{\"message\":\"测试111\",\"messageId\":1,\"params\":{},\"roomId\":1,\"sentTime\":\"2025-05-24\",\"userId\":100}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-29 17:57:53');
+INSERT INTO `sys_oper_log` VALUES (202, '游戏房间聊天记录', 1, 'com.webPokerGame.controller.PokerChatMessageController.add()', 'POST', 1, 'admin', NULL, '/message/messageAdmin', '127.0.0.1', '内网IP', '{\"message\":\"测试22222\",\"messageId\":2,\"params\":{},\"roomId\":1,\"sentTime\":\"2025-05-24\",\"userId\":100}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-29 17:58:05');
+INSERT INTO `sys_oper_log` VALUES (203, '游戏房间聊天记录', 1, 'com.webPokerGame.controller.PokerChatMessageController.add()', 'POST', 1, 'admin', NULL, '/message/messageAdmin', '127.0.0.1', '内网IP', '{\"message\":\"测\",\"messageId\":3,\"params\":{},\"roomId\":1,\"sentTime\":\"2025-05-24\",\"userId\":101}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-29 17:58:16');
+INSERT INTO `sys_oper_log` VALUES (204, '角色管理', 2, 'com.webPokerGame.web.controller.system.SysRoleController.edit()', 'PUT', 1, 'admin', NULL, '/system/role', '127.0.0.1', '内网IP', '{\"admin\":false,\"createTime\":\"2025-05-28 17:20:17\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":false,\"menuIds\":[2000],\"params\":{},\"roleId\":100,\"roleKey\":\"player\",\"roleName\":\"玩家\",\"roleSort\":1,\"status\":\"0\",\"updateBy\":\"admin\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-30 01:35:39');
+INSERT INTO `sys_oper_log` VALUES (205, '角色管理', 2, 'com.webPokerGame.web.controller.system.SysRoleController.edit()', 'PUT', 1, 'admin', NULL, '/system/role', '127.0.0.1', '内网IP', '{\"admin\":false,\"createTime\":\"2025-05-28 17:20:17\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":false,\"menuIds\":[2000,2025,2026,2030,2031,2032,2036,2037,2042,2043,2044,2048],\"params\":{},\"roleId\":100,\"roleKey\":\"player\",\"roleName\":\"玩家\",\"roleSort\":1,\"status\":\"0\",\"updateBy\":\"admin\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-05-30 01:38:15');
 
 -- ----------------------------
 -- Table structure for sys_post
@@ -893,7 +988,7 @@ CREATE TABLE `sys_post`  (
   `post_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '岗位ID',
   `post_code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '岗位编码',
   `post_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '岗位名称',
-  `post_sort` int(4) NOT NULL COMMENT '显示顺序',
+  `post_sort` int(11) NOT NULL COMMENT '显示顺序',
   `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '状态（0正常 1停用）',
   `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
@@ -906,10 +1001,8 @@ CREATE TABLE `sys_post`  (
 -- ----------------------------
 -- Records of sys_post
 -- ----------------------------
-INSERT INTO `sys_post` VALUES (1, 'ceo', '董事长', 1, '0', 'admin', '2025-03-15 20:28:50', '', NULL, '');
-INSERT INTO `sys_post` VALUES (2, 'se', '项目经理', 2, '0', 'admin', '2025-03-15 20:28:50', '', NULL, '');
-INSERT INTO `sys_post` VALUES (3, 'hr', '人力资源', 3, '0', 'admin', '2025-03-15 20:28:50', '', NULL, '');
-INSERT INTO `sys_post` VALUES (4, 'user', '普通员工', 4, '0', 'admin', '2025-03-15 20:28:50', '', NULL, '');
+INSERT INTO `sys_post` VALUES (1, 'dev', '开发', 1, '0', 'admin', '2025-03-15 20:28:50', 'admin', '2025-05-28 17:24:39', '');
+INSERT INTO `sys_post` VALUES (4, 'player', '玩家', 4, '0', 'admin', '2025-03-15 20:28:50', 'admin', '2025-05-28 17:24:50', '');
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -919,7 +1012,7 @@ CREATE TABLE `sys_role`  (
   `role_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '角色ID',
   `role_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '角色名称',
   `role_key` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '角色权限字符串',
-  `role_sort` int(4) NOT NULL COMMENT '显示顺序',
+  `role_sort` int(11) NOT NULL COMMENT '显示顺序',
   `data_scope` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '1' COMMENT '数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限）',
   `menu_check_strictly` tinyint(1) NULL DEFAULT 1 COMMENT '菜单树选择项是否关联显示',
   `dept_check_strictly` tinyint(1) NULL DEFAULT 1 COMMENT '部门树选择项是否关联显示',
@@ -931,13 +1024,14 @@ CREATE TABLE `sys_role`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`role_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 101 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_role
 -- ----------------------------
 INSERT INTO `sys_role` VALUES (1, '超级管理员', 'admin', 1, '1', 1, 1, '0', '0', 'admin', '2025-03-15 20:28:50', '', NULL, '超级管理员');
-INSERT INTO `sys_role` VALUES (2, '普通角色', 'common', 2, '2', 1, 1, '0', '0', 'admin', '2025-03-15 20:28:50', '', NULL, '普通角色');
+INSERT INTO `sys_role` VALUES (2, '普通角色', 'common', 2, '2', 0, 0, '1', '0', 'admin', '2025-03-15 20:28:50', 'admin', '2025-05-28 17:20:22', '普通角色');
+INSERT INTO `sys_role` VALUES (100, '玩家', 'player', 1, '1', 0, 1, '0', '0', 'admin', '2025-05-28 17:20:17', 'admin', '2025-05-30 01:38:14', NULL);
 
 -- ----------------------------
 -- Table structure for sys_role_dept
@@ -1054,6 +1148,18 @@ INSERT INTO `sys_role_menu` VALUES (2, 1057);
 INSERT INTO `sys_role_menu` VALUES (2, 1058);
 INSERT INTO `sys_role_menu` VALUES (2, 1059);
 INSERT INTO `sys_role_menu` VALUES (2, 1060);
+INSERT INTO `sys_role_menu` VALUES (100, 2000);
+INSERT INTO `sys_role_menu` VALUES (100, 2025);
+INSERT INTO `sys_role_menu` VALUES (100, 2026);
+INSERT INTO `sys_role_menu` VALUES (100, 2030);
+INSERT INTO `sys_role_menu` VALUES (100, 2031);
+INSERT INTO `sys_role_menu` VALUES (100, 2032);
+INSERT INTO `sys_role_menu` VALUES (100, 2036);
+INSERT INTO `sys_role_menu` VALUES (100, 2037);
+INSERT INTO `sys_role_menu` VALUES (100, 2042);
+INSERT INTO `sys_role_menu` VALUES (100, 2043);
+INSERT INTO `sys_role_menu` VALUES (100, 2044);
+INSERT INTO `sys_role_menu` VALUES (100, 2048);
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -1080,13 +1186,16 @@ CREATE TABLE `sys_user`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`user_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 103 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 103, 'admin', '若依', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2025-05-25 22:20:35', 'admin', '2025-03-15 20:28:50', '', '2025-05-25 22:20:35', '管理员');
-INSERT INTO `sys_user` VALUES (2, 105, 'ry', '若依', '00', 'ry@qq.com', '15666666666', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2025-03-15 20:28:50', 'admin', '2025-03-15 20:28:50', '', NULL, '测试员');
+INSERT INTO `sys_user` VALUES (1, 201, 'admin', '若依', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2025-06-02 16:00:31', 'admin', '2025-03-15 20:28:50', '', '2025-06-02 16:00:31', '管理员');
+INSERT INTO `sys_user` VALUES (2, 200, 'ry', '若依', '00', 'ry@qq.com', '15666666666', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2025-03-15 20:28:50', 'admin', '2025-03-15 20:28:50', 'admin', '2025-05-28 17:22:16', '测试员');
+INSERT INTO `sys_user` VALUES (100, 200, 'Song', 'Song', '00', '2955500055@qq.com', '13122223333', '0', '', '$2a$10$jdRZNZFcpRiQvUvCe35Px.KR6jWkOk7A872fBmH/VqTLpvkaifPbu', '0', '0', '127.0.0.1', '2025-05-30 01:42:12', '', '2025-05-29 16:12:17', 'admin', '2025-05-30 01:42:11', NULL);
+INSERT INTO `sys_user` VALUES (101, 200, 'Xiaoyu', 'Xiaoyu', '00', '1234567890@qq.com', '15122233344', '0', '', '$2a$10$vbkEHC1y33qZ/aA126UhPOn0BwRNeiJYm3UOwXovZqq/Dnw6qAPQq', '0', '0', '127.0.0.1', '2025-05-29 16:23:05', '', '2025-05-29 16:22:58', 'admin', '2025-05-29 16:23:52', NULL);
+INSERT INTO `sys_user` VALUES (102, 200, '测试ing', '测试ing', '00', '1234567790@qq.com', '13122233322', '0', '', '$2a$10$7eG6zQq/E4acT94nHV/eou5zwq2YLTrvuuCfgq.52Sj8b/oxRiExO', '0', '0', '127.0.0.1', '2025-05-29 16:25:09', '', '2025-05-29 16:24:47', 'admin', '2025-05-29 16:26:07', NULL);
 
 -- ----------------------------
 -- Table structure for sys_user_post
@@ -1102,7 +1211,10 @@ CREATE TABLE `sys_user_post`  (
 -- Records of sys_user_post
 -- ----------------------------
 INSERT INTO `sys_user_post` VALUES (1, 1);
-INSERT INTO `sys_user_post` VALUES (2, 2);
+INSERT INTO `sys_user_post` VALUES (2, 4);
+INSERT INTO `sys_user_post` VALUES (100, 4);
+INSERT INTO `sys_user_post` VALUES (101, 4);
+INSERT INTO `sys_user_post` VALUES (102, 4);
 
 -- ----------------------------
 -- Table structure for sys_user_role
@@ -1118,6 +1230,9 @@ CREATE TABLE `sys_user_role`  (
 -- Records of sys_user_role
 -- ----------------------------
 INSERT INTO `sys_user_role` VALUES (1, 1);
-INSERT INTO `sys_user_role` VALUES (2, 2);
+INSERT INTO `sys_user_role` VALUES (2, 100);
+INSERT INTO `sys_user_role` VALUES (100, 100);
+INSERT INTO `sys_user_role` VALUES (101, 100);
+INSERT INTO `sys_user_role` VALUES (102, 100);
 
 SET FOREIGN_KEY_CHECKS = 1;
