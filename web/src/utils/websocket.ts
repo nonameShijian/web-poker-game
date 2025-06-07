@@ -15,7 +15,7 @@ export function initWebSocket(url: string): void {
     return;
   }
 
-  ws = new WebSocket(url, /*[localStorage.getItem("accessToken")!]*/);
+  ws = new WebSocket(url, [localStorage.getItem("accessToken")!]);
 
   ws.onopen = () => {
     console.log("WebSocket connection opened");
@@ -57,6 +57,7 @@ export function sendWebSocketMessage(message: WsData) {
     }
     switch (ws.readyState) {
       case WebSocket.OPEN:
+        console.log("WebSocket 发送消息:", message);
         ws.send(JSON.stringify(message));
         resolve(null);
         break;

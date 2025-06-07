@@ -1,7 +1,13 @@
 package com.webPokerGame.domain;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.webPokerGame.common.core.domain.entity.SysUser;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.webPokerGame.common.annotation.Excel;
@@ -13,6 +19,8 @@ import com.webPokerGame.common.core.domain.BaseEntity;
  * @author lwy
  * @date 2025-05-25
  */
+@Setter
+@Getter
 public class PokerRoom extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
@@ -37,51 +45,12 @@ public class PokerRoom extends BaseEntity
     @Excel(name = "房间创建时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date createdAt;
 
-    public void setRoomId(Long roomId) 
-    {
-        this.roomId = roomId;
-    }
+    private List<SysUser> players = new ArrayList<>();
 
-    public Long getRoomId() 
-    {
-        return roomId;
-    }
-    public void setOwnerId(Long ownerId) 
-    {
-        this.ownerId = ownerId;
-    }
-
-    public Long getOwnerId() 
-    {
-        return ownerId;
-    }
-    public void setMaxPlayers(Integer maxPlayers) 
-    {
-        this.maxPlayers = maxPlayers;
-    }
-
-    public Integer getMaxPlayers() 
-    {
-        return maxPlayers;
-    }
-    public void setCurrentPlayers(Integer currentPlayers) 
-    {
-        this.currentPlayers = currentPlayers;
-    }
-
-    public Integer getCurrentPlayers() 
-    {
-        return currentPlayers;
-    }
-    public void setCreatedAt(Date createdAt) 
-    {
-        this.createdAt = createdAt;
-    }
-
-    public Date getCreatedAt() 
-    {
-        return createdAt;
-    }
+    /**
+     * 房间状态，0-等待中，1-游戏中，默认0
+     */
+    private int status = 0;
 
     @Override
     public String toString() {

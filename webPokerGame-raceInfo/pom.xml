@@ -25,6 +25,10 @@
             <groupId>com.webPokerGame</groupId>
             <artifactId>webPokerGame-system</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.webPokerGame</groupId>
+            <artifactId>webPokerGame-framework</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

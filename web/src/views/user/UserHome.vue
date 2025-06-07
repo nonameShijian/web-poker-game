@@ -73,7 +73,9 @@ import { useRoomStore } from "@/store/roomStore";
 const userStore = useUserStore();
 const roomStore = useRoomStore();
 
-const onlineUsers = ref<User[]>([
+const onlineUsers = ref<User[]>([]);
+/*
+[
   {
     userId: 1,
     userName: "张三",
@@ -134,9 +136,11 @@ const onlineUsers = ref<User[]>([
     postIds: [],
     roleId: 1,
   }
-]);
-const rooms = ref<Room[]>([
-  {
+]
+*/
+const rooms = ref<Room[]>([]);
+/*
+{
     roomId: 1,
     ownerId: 100,
     // players: [],
@@ -149,14 +153,14 @@ const rooms = ref<Room[]>([
     createdAt: new Date(),
     status: 0,
   },
-]);
+*/
 
 const showOnlineUsers = ref(false);
 const onlineBtnRef = ref();
 const userListPosition = ref({ top: "0px", left: "0px" }); // 定位信息
 
-const inRoom = ref(true);
-const room = ref<Room | null>(rooms.value[0]);
+const inRoom = ref(false);
+const room = ref<Room | null>(null);
 
 // 显示/隐藏在线用户列表
 const toggleOnlineUsers = () => {
@@ -270,7 +274,6 @@ const fetchUserInfo = async () => {
 
 const WebSocketMessageListener = (event: any) => {
   const data = event.detail;
-  console.log("Received message:", data);
   switch (data.action) {
     case "user_list":
       onlineUsers.value = data.data;
