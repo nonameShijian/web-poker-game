@@ -23,7 +23,7 @@ public class PokerRaceInfo extends BaseEntity
 
     /** 比赛id */
     @Excel(name = "比赛id")
-    private Integer raceId;
+    private String raceId;
 
     /** 玩家A */
     @Excel(name = "玩家A")
@@ -75,12 +75,12 @@ public class PokerRaceInfo extends BaseEntity
     {
         return id;
     }
-    public void setRaceId(Integer raceId) 
+    public void setRaceId(String raceId)
     {
         this.raceId = raceId;
     }
 
-    public Integer getRaceId() 
+    public String getRaceId()
     {
         return raceId;
     }
